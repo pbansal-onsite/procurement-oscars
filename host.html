@@ -165,6 +165,7 @@ document.getElementById("qr-img").src = `https://api.qrserver.com/v1/create-qr-c
 
 set(ref(db,"gameState"), {phase:"lobby", questionIdx:0});
 remove(ref(db,"voters"));
+remove(ref(db,"votes"));
 
 onValue(ref(db,"voters"), snap => {
   voterCount = snap.exists() ? Object.keys(snap.val()).length : 0;
