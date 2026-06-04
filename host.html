@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.5">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1">&lt;meta charset="UTF-8"&gt;&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</p>
+<p class="p1">&lt;title&gt;Procurement Oscars — Host&lt;/title&gt;</p>
+<p class="p1">&lt;style&gt;</p>
+<p class="p1">*{box-sizing:border-box;margin:0;padding:0;}</p>
+<p class="p1">body{font-family:system-ui,sans-serif;background:#0a0a0f;color:#fff;min-height:100vh;}</p>
+<p class="p1">.screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:40px;position:relative;overflow:hidden;}</p>
+<p class="p1">.screen.active{display:flex;}</p>
+<p class="p1">.logo{position:absolute;top:24px;left:32px;display:flex;align-items:center;gap:10px;}</p>
+<p class="p1">.logo-lyft{color:#FF00BF;font-weight:700;font-size:22px;}</p>
+<p class="p1">.logo-sep{color:#444;font-size:22px;}</p>
+<p class="p1">.logo-title{color:#888;font-size:16px;}</p>
+<p class="p1">.counter-badge{position:absolute;top:24px;right:32px;background:#111;border:1px solid #222;border-radius:10px;padding:8px 16px;font-size:14px;color:#888;}</p>
+<p class="p1">.counter-badge span{color:#FF00BF;font-weight:700;font-size:18px;margin-left:6px;}</p>
+<p class="p1">h1{font-size:52px;font-weight:700;letter-spacing:-1px;margin-bottom:12px;}</p>
+<p class="p1">h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}</p>
+<p class="p1">.sub{color:#888;font-size:20px;margin-bottom:40px;}</p>
+<p class="p1">.btn{background:#FF00BF;color:#fff;border:none;border-radius:14px;padding:16px 48px;font-size:18px;font-weight:700;cursor:pointer;transition:opacity .15s;}</p>
+<p class="p1">.btn:hover{opacity:.85;}</p>
+<p class="p1">.btn-ghost{background:transparent;border:1px solid #333;color:#666;border-radius:10px;padding:8px 20px;font-size:13px;cursor:pointer;margin-top:16px;}</p>
+<p class="p1">.qr-wrap{background:#fff;border-radius:20px;padding:20px;display:inline-block;margin-bottom:28px;}</p>
+<p class="p1">.award-num{color:#555;font-size:14px;margin-bottom:24px;}</p>
+<p class="p1">.award-icon{font-size:56px;margin-bottom:16px;}</p>
+<p class="p1">.timer-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;margin:32px 0 12px;}</p>
+<p class="p1">.timer-ring{position:absolute;width:110px;height:110px;border-radius:50%;border:3px solid #FF00BF;opacity:0;transition:opacity .3s;}</p>
+<p class="p1">.timer-ring.pulse{animation:pulseRing 1s ease-out infinite;}</p>
+<p class="p1">.timer-circle{width:110px;height:110px;border-radius:50%;background:#1a1a2e;border:4px solid #333;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:700;transition:background .3s,border-color .3s;}</p>
+<p class="p1">.timer-circle.hot{background:#FF00BF;border-color:#FF00BF;}</p>
+<p class="p1">.votes-live{color:#555;font-size:15px;}</p>
+<p class="p1">.votes-live span{color:#FF00BF;font-weight:700;}</p>
+<p class="p1">.bar-row{margin-bottom:12px;}</p>
+<p class="p1">.bar-label{display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;}</p>
+<p class="p1">.bar-label .name{color:#ccc;}</p>
+<p class="p1">.bar-label .name.winner{color:#FF00BF;font-weight:700;}</p>
+<p class="p1">.bar-label .cnt{color:#555;}</p>
+<p class="p1">.bar-bg{height:12px;background:#1a1a1a;border-radius:6px;}</p>
+<p class="p1">.bar-fill{height:12px;border-radius:6px;width:0;transition:width .8s ease;}</p>
+<p class="p1">.bar-fill.winner{background:#FF00BF;}</p>
+<p class="p1">.bar-fill.other{background:#333;}</p>
+<p class="p1">.winner-announce{margin:16px 0 28px;}</p>
+<p class="p1">.winner-announce .eyebrow{color:#888;font-size:18px;margin-bottom:6px;}</p>
+<p class="p1">.winner-announce .name{font-size:44px;font-weight:700;color:#FF00BF;}</p>
+<p class="p1">.winner-announce .tally{color:#666;font-size:16px;margin-top:4px;}</p>
+<p class="p1">.lb-row{display:flex;align-items:center;gap:16px;background:#111;border:1px solid #222;border-radius:14px;padding:14px 20px;margin-bottom:10px;width:100%;max-width:560px;}</p>
+<p class="p1">.lb-row.top1{border-color:#FF00BF;background:#1a0a14;}</p>
+<p class="p1">.lb-medal{font-size:24px;min-width:32px;}</p>
+<p class="p1">.lb-name{flex:1;font-size:18px;}</p>
+<p class="p1">.lb-row.top1 .lb-name{color:#FF00BF;font-weight:700;}</p>
+<p class="p1">.lb-awards{color:#555;font-size:14px;}</p>
+<p class="p1">.confetti-piece{position:absolute;border-radius:2px;animation:confettiFall 2.5s ease-in forwards;}</p>
+<p class="p1">@keyframes pulseRing{0%{transform:scale(1);opacity:.8;}100%{transform:scale(1.7);opacity:0;}}</p>
+<p class="p1">@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(500px) rotate(720deg);opacity:0;}}</p>
+<p class="p1">@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}</p>
+<p class="p1">@keyframes pop{0%{transform:scale(.8);opacity:0;}70%{transform:scale(1.08);}100%{transform:scale(1);opacity:1;}}</p>
+<p class="p1">.fade-up{animation:fadeUp .5s ease forwards;}</p>
+<p class="p1">.pop{animation:pop .45s ease forwards;}</p>
+<p class="p1">&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="screen active" id="s-lobby"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="logo"&gt;&lt;span class="logo-lyft"&gt;Lyft&lt;/span&gt;&lt;span class="logo-sep"&gt;|&lt;/span&gt;&lt;span class="logo-title"&gt;Procurement Oscars&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="counter-badge"&gt;Players joined &lt;span id="voter-count"&gt;0&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="fade-up" style="text-align:center;max-width:600px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="font-size:64px;margin-bottom:16px;"&gt;🏆&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;Procurement Oscars&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="sub"&gt;Scan to join on your phone&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="qr-wrap"&gt;&lt;img id="qr-img" src="" width="200" height="200" alt="QR code"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p style="color:#333;font-size:13px;font-family:monospace;margin-bottom:28px;" id="vote-url"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn" onclick="startQuestion(0)"&gt;Start the Oscars&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="screen" id="s-question"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="logo"&gt;&lt;span class="logo-lyft"&gt;Lyft&lt;/span&gt;&lt;span class="logo-sep"&gt;|&lt;/span&gt;&lt;span class="logo-title"&gt;Procurement Oscars&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="counter-badge"&gt;Votes in &lt;span id="q-vote-count"&gt;0&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div style="text-align:center;max-width:700px;width:100%;" class="fade-up"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="award-num" id="q-num"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="award-icon" id="q-icon"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 id="q-label"&gt;&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="timer-wrap"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="timer-ring" id="timer-ring"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="timer-circle" id="timer-circle"&gt;10&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="votes-live"&gt;votes in: &lt;span id="q-votes-in"&gt;0&lt;/span&gt; / &lt;span id="q-total-voters"&gt;0&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;br&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn-ghost" onclick="showResults()"&gt;Skip timer&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="screen" id="s-results"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="logo"&gt;&lt;span class="logo-lyft"&gt;Lyft&lt;/span&gt;&lt;span class="logo-sep"&gt;|&lt;/span&gt;&lt;span class="logo-title"&gt;Procurement Oscars&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div style="width:100%;max-width:660px;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="text-align:center;margin-bottom:28px;" class="fade-up"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="font-size:32px;margin-bottom:6px;" id="r-icon"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div style="color:#666;font-size:16px;margin-bottom:16px;" id="r-label"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;div class="winner-announce pop" id="r-winner-block"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="eyebrow"&gt;and the Oscar goes to...&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="name" id="r-winner-name"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="tally" id="r-winner-tally"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="r-bars" style="margin-bottom:32px;"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="text-align:center;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>&lt;button class="btn" id="btn-next-award" onclick="nextAward()"&gt;Next award →&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="confetti-container" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"&gt;&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="screen" id="s-leaderboard"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="logo"&gt;&lt;span class="logo-lyft"&gt;Lyft&lt;/span&gt;&lt;span class="logo-sep"&gt;|&lt;/span&gt;&lt;span class="logo-title"&gt;Procurement Oscars&lt;/span&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="fade-up" style="text-align:center;max-width:560px;width:100%;"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="font-size:52px;margin-bottom:8px;"&gt;🏆&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 style="margin-bottom:4px;"&gt;Hall of fame&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p style="color:#666;font-size:15px;margin-bottom:28px;"&gt;Tonight's procurement legends&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="lb-rows"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn-ghost" style="margin-top:20px;" onclick="resetGame()"&gt;Play again&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="confetti-container2" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"&gt;&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script type="module"&gt;</p>
+<p class="p1">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";</p>
+<p class="p1">import { getDatabase, ref, set, get, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";</p>
+<p class="p2"><br></p>
+<p class="p1">const firebaseConfig = {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>apiKey: "PASTE_HERE",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>authDomain: "PASTE_HERE",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>databaseURL: "PASTE_HERE",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>projectId: "PASTE_HERE",</p>
+<p class="p1"><span class="Apple-converted-space">  </span>appId: "PASTE_HERE"</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">const app = initializeApp(firebaseConfig);</p>
+<p class="p1">const db = getDatabase(app);</p>
+<p class="p2"><br></p>
+<p class="p1">const SUPERLATIVES = [</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{icon:"🧾",label:"Most likely to negotiate a restaurant bill"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{icon:"🕵️",label:"Best poker face in a vendor meeting"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{icon:"📋",label:"Would create a RACI chart for a birthday party"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{icon:"💻",label:"Most tabs open at once"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{icon:"📨",label:"Sends 'just circling back' the fastest after no reply"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{icon:"🤝",label:"Most likely to be on a first-name basis with every supplier"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{icon:"🌙",label:"Would reconcile invoices for fun on a Friday night"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{icon:"💬",label:"The one everyone Slacks before sending anything externally"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{icon:"📱",label:"Most likely to have a supplier's personal cell number"},</p>
+<p class="p1"><span class="Apple-converted-space">  </span>{icon:"🗂️",label:"Most likely to remember a PO number from 3 years ago"},</p>
+<p class="p1">];</p>
+<p class="p2"><br></p>
+<p class="p1">let timerInterval = null;</p>
+<p class="p1">let currentIdx = 0;</p>
+<p class="p1">let allVotes = {};</p>
+<p class="p1">let voterCount = 0;</p>
+<p class="p2"><br></p>
+<p class="p1">const voteUrl = window.location.origin + "/vote.html";</p>
+<p class="p1">document.getElementById("vote-url").textContent = voteUrl;</p>
+<p class="p1">document.getElementById("qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&amp;data=${encodeURIComponent(voteUrl)}`;</p>
+<p class="p2"><br></p>
+<p class="p1">set(ref(db,"gameState"), {phase:"lobby", questionIdx:0});</p>
+<p class="p2"><br></p>
+<p class="p1">onValue(ref(db,"voters"), snap =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>voterCount = snap.exists() ? Object.keys(snap.val()).length : 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("voter-count").textContent = voterCount;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("q-total-voters").textContent = voterCount;</p>
+<p class="p1">});</p>
+<p class="p2"><br></p>
+<p class="p1">onValue(ref(db,"votes"), snap =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>allVotes = snap.exists() ? snap.val() : {};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (document.getElementById("s-question").classList.contains("active")) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const v = allVotes[currentIdx] || {};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const total = Object.values(v).reduce((a,b)=&gt;a+b,0);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("q-votes-in").textContent = total;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("q-vote-count").textContent = total;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">});</p>
+<p class="p2"><br></p>
+<p class="p1">window.startQuestion = function(idx) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>currentIdx = idx;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clearInterval(timerInterval);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const s = SUPERLATIVES[idx];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showScreen("s-question");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("q-num").textContent = `Award ${idx+1} of ${SUPERLATIVES.length}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("q-icon").textContent = s.icon;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("q-label").textContent = s.label;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("q-votes-in").textContent = "0";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>set(ref(db,"gameState"), {phase:"question", questionIdx:idx});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let t = 10;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const circle = document.getElementById("timer-circle");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const ring = document.getElementById("timer-ring");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>circle.textContent = t;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>circle.classList.remove("hot");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>ring.classList.remove("pulse");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>timerInterval = setInterval(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>t--;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>circle.textContent = t;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (t &lt;= 3) { circle.classList.add("hot"); ring.classList.add("pulse"); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (t &lt;= 0) { clearInterval(timerInterval); window.showResults(); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}, 1000);</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">window.showResults = function() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>clearInterval(timerInterval);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const v = allVotes[currentIdx] || {};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const entries = Object.entries(v).sort((a,b)=&gt;b[1]-a[1]);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const total = entries.reduce((s,e)=&gt;s+e[1],0);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const s = SUPERLATIVES[currentIdx];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showScreen("s-results");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>set(ref(db,"gameState"), {phase:"results", questionIdx:currentIdx});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("r-icon").textContent = s.icon;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("r-label").textContent = s.label;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const winnerName = entries[0] ? entries[0][0] : "No votes";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const winnerVotes = entries[0] ? entries[0][1] : 0;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("r-winner-name").textContent = winnerName;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("r-winner-tally").textContent = `${winnerVotes} of ${total} vote${total!==1?"s":""}`;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const barsEl = document.getElementById("r-bars");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>barsEl.innerHTML = "";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>entries.slice(0,6).forEach(([name,cnt],i) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const pct = total &gt; 0 ? Math.round((cnt/total)*100) : 0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const isW = i===0;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const row = document.createElement("div");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>row.className = "bar-row fade-up";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>row.style.animationDelay = `${i*0.1}s`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>row.innerHTML = `&lt;div class="bar-label"&gt;&lt;span class="name ${isW?"winner":""}"&gt;${isW?"🏆 ":""}${name}&lt;/span&gt;&lt;span class="cnt"&gt;${cnt} vote${cnt!==1?"s":""} · ${pct}%&lt;/span&gt;&lt;/div&gt;&lt;div class="bar-bg"&gt;&lt;div class="bar-fill ${isW?"winner":"other"}" style="width:${pct}%"&gt;&lt;/div&gt;&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>barsEl.appendChild(row);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (entries[0]) spawnConfetti("confetti-container");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById("btn-next-award").textContent = currentIdx &lt; SUPERLATIVES.length-1 ? "Next award →" : "See leaderboard 🏆";</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">window.nextAward = function() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>if (currentIdx &lt; SUPERLATIVES.length-1) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>window.startQuestion(currentIdx+1);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>showScreen("s-leaderboard");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>set(ref(db,"gameState"), {phase:"leaderboard", questionIdx:currentIdx});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>renderLeaderboard();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>spawnConfetti("confetti-container2");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">function renderLeaderboard() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const tally = {};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>SUPERLATIVES.forEach((_,i) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const v = allVotes[i] || {};</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const entries = Object.entries(v).sort((a,b)=&gt;b[1]-a[1]);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if (entries[0]) { const w = entries[0][0]; tally[w] = (tally[w]||0)+1; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const sorted = Object.entries(tally).sort((a,b)=&gt;b[1]-a[1]);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const medals = ["🥇","🥈","🥉"];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const cont = document.getElementById("lb-rows");</p>
+<p class="p1"><span class="Apple-converted-space">  </span>cont.innerHTML = "";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>sorted.forEach(([name,cnt],i) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const row = document.createElement("div");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>row.className = `lb-row${i===0?" top1":""}`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>row.innerHTML = `&lt;span class="lb-medal"&gt;${medals[i]||""}&lt;/span&gt;&lt;span class="lb-name"&gt;${name}&lt;/span&gt;&lt;span class="lb-awards"&gt;${cnt} award${cnt!==1?"s":""}&lt;/span&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>cont.appendChild(row);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>});</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">window.resetGame = function() {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>remove(ref(db,"votes"));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>remove(ref(db,"voters"));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>set(ref(db,"gameState"),{phase:"lobby",questionIdx:0});</p>
+<p class="p1"><span class="Apple-converted-space">  </span>allVotes = {};</p>
+<p class="p1"><span class="Apple-converted-space">  </span>showScreen("s-lobby");</p>
+<p class="p1">};</p>
+<p class="p2"><br></p>
+<p class="p1">function showScreen(id) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll(".screen").forEach(s=&gt;s.classList.remove("active"));</p>
+<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById(id).classList.add("active");</p>
+<p class="p1">}</p>
+<p class="p2"><br></p>
+<p class="p1">function spawnConfetti(containerId) {</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const c = document.getElementById(containerId);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>c.innerHTML = "";</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const colors = ["#FF00BF","#fff","#a855f7","#22d3ee","#f59e0b"];</p>
+<p class="p1"><span class="Apple-converted-space">  </span>for (let i=0;i&lt;40;i++) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const p = document.createElement("div");</p>
+<p class="p1"><span class="Apple-converted-space">    </span>p.className = "confetti-piece";</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const size = 6+Math.random()*8;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>p.style.cssText = `left:${Math.random()*100}%;top:0;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};animation-delay:${Math.random()*1.5}s;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>c.appendChild(p);</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">}</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
