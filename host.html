@@ -159,7 +159,7 @@ let currentIdx = 0;
 let allVotes = {};
 let voterCount = 0;
 
-const voteUrl = window.location.origin + "/vote.html";
+const voteUrl = "https://pbansal-onsite.github.io/procurement-oscars/vote.html";
 document.getElementById("vote-url").textContent = voteUrl;
 document.getElementById("qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(voteUrl)}`;
 
