@@ -164,6 +164,7 @@ document.getElementById("vote-url").textContent = voteUrl;
 document.getElementById("qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(voteUrl)}`;
 
 set(ref(db,"gameState"), {phase:"lobby", questionIdx:0});
+remove(ref(db,"voters"));
 
 onValue(ref(db,"voters"), snap => {
   voterCount = snap.exists() ? Object.keys(snap.val()).length : 0;
