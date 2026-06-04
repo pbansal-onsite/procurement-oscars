@@ -1,198 +1,182 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2685.5">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Procurement Oscars — Vote</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:system-ui,sans-serif;background:#0a0a0f;color:#fff;min-height:100vh;padding:24px 16px;}
+.screen{display:none;flex-direction:column;min-height:100vh;}
+.screen.active{display:flex;}
+.center{align-items:center;justify-content:center;text-align:center;}
+.pink{color:#FF00BF;}
+.sub{color:#666;font-size:15px;}
+.badge{background:#111;border:1px solid #222;border-radius:14px;padding:20px 28px;margin-top:24px;}
+.dot{width:8px;height:8px;border-radius:50%;background:#FF00BF;display:inline-block;margin:0 3px;}
+.prog-bar-bg{height:3px;background:#1a1a1a;border-radius:2px;margin-bottom:20px;}
+.prog-bar-fill{height:3px;background:#FF00BF;border-radius:2px;transition:width .4s;}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.award-icon{font-size:40px;margin-bottom:10px;text-align:center;}
+.award-lbl{font-size:20px;font-weight:700;line-height:1.3;text-align:center;margin-bottom:22px;}
+.name-btn{display:block;width:100%;background:#111;color:#ccc;border:1px solid #222;border-radius:12px;padding:14px 16px;font-size:15px;text-align:left;cursor:pointer;margin-bottom:8px;transition:all .15s;}
+.name-btn:active{transform:scale(.98);}
+.name-btn.sel{background:#FF00BF;color:#fff;border-color:#FF00BF;font-weight:700;}
+.voted-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;}
+.voted-icon{font-size:40px;}
+.voted-name{font-size:22px;font-weight:700;color:#FF00BF;margin-top:4px;}
+.waiting{color:#555;font-size:14px;margin-top:8px;}
+.fin-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;}
+</style>
 </head>
 <body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1">&lt;meta charset="UTF-8"&gt;&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;</p>
-<p class="p1">&lt;title&gt;Procurement Oscars — Vote&lt;/title&gt;</p>
-<p class="p1">&lt;style&gt;</p>
-<p class="p1">*{box-sizing:border-box;margin:0;padding:0;}</p>
-<p class="p1">body{font-family:system-ui,sans-serif;background:#0a0a0f;color:#fff;min-height:100vh;padding:24px 16px;}</p>
-<p class="p1">.screen{display:none;flex-direction:column;min-height:100vh;}</p>
-<p class="p1">.screen.active{display:flex;}</p>
-<p class="p1">.center{align-items:center;justify-content:center;text-align:center;}</p>
-<p class="p1">.pink{color:#FF00BF;}</p>
-<p class="p1">.sub{color:#666;font-size:15px;}</p>
-<p class="p1">.badge{background:#111;border:1px solid #222;border-radius:14px;padding:20px 28px;margin-top:24px;}</p>
-<p class="p1">.dot{width:8px;height:8px;border-radius:50%;background:#FF00BF;display:inline-block;margin:0 3px;}</p>
-<p class="p1">.prog-bar-bg{height:3px;background:#1a1a1a;border-radius:2px;margin-bottom:20px;}</p>
-<p class="p1">.prog-bar-fill{height:3px;background:#FF00BF;border-radius:2px;transition:width .4s;}</p>
-<p class="p1">.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}</p>
-<p class="p1">.award-icon{font-size:40px;margin-bottom:10px;text-align:center;}</p>
-<p class="p1">.award-lbl{font-size:20px;font-weight:700;line-height:1.3;text-align:center;margin-bottom:22px;}</p>
-<p class="p1">.name-btn{display:block;width:100%;background:#111;color:#ccc;border:1px solid #222;border-radius:12px;padding:14px 16px;font-size:15px;text-align:left;cursor:pointer;margin-bottom:8px;transition:all .15s;}</p>
-<p class="p1">.name-btn:active{transform:scale(.98);}</p>
-<p class="p1">.name-btn.sel{background:#FF00BF;color:#fff;border-color:#FF00BF;font-weight:700;}</p>
-<p class="p1">.voted-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;}</p>
-<p class="p1">.voted-icon{font-size:40px;}</p>
-<p class="p1">.voted-name{font-size:22px;font-weight:700;color:#FF00BF;margin-top:4px;}</p>
-<p class="p1">.waiting{color:#555;font-size:14px;margin-top:8px;}</p>
-<p class="p1">.fin-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;}</p>
-<p class="p1">&lt;/style&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="screen active center" id="s-lobby"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div style="font-size:48px;margin-bottom:16px;"&gt;🏆&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;h1 style="font-size:28px;font-weight:700;margin-bottom:8px;"&gt;Procurement Oscars&lt;/h1&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;p class="sub" style="margin-bottom:4px;"&gt;by Lyft Procurement&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="badge"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p style="color:#888;margin-bottom:16px;"&gt;Waiting for the host to start...&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div&gt;&lt;span class="dot" style="opacity:.4;"&gt;&lt;/span&gt;&lt;span class="dot" style="opacity:.7;"&gt;&lt;/span&gt;&lt;span class="dot" style="opacity:1;"&gt;&lt;/span&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="screen" id="s-question" style="padding-top:8px;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="header"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span style="color:#555;font-size:13px;" id="q-num"&gt;&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;span class="pink" style="font-weight:700;font-size:13px;"&gt;Lyft Oscars&lt;/span&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="prog-bar-bg"&gt;&lt;div class="prog-bar-fill" id="q-prog"&gt;&lt;/div&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="award-icon" id="q-icon"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="award-lbl" id="q-label"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="q-names"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="voted-wrap" id="q-voted" style="display:none;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="voted-icon"&gt;✅&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="color:#888;font-size:16px;"&gt;You voted for&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="voted-name" id="q-voted-name"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="waiting"&gt;Waiting for results on the big screen...&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="screen center" id="s-results"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div style="font-size:40px;margin-bottom:12px;" id="r-icon"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div style="font-size:14px;color:#666;margin-bottom:8px;" id="r-label"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div style="font-size:18px;color:#888;margin-bottom:8px;"&gt;Check the big screen!&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div style="font-size:32px;"&gt;🎬&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="r-my-vote" style="margin-top:24px;background:#111;border-radius:12px;padding:14px 24px;display:none;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="color:#666;font-size:13px;"&gt;You voted for&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="pink" style="font-weight:700;font-size:18px;" id="r-my-vote-name"&gt;&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;div class="screen center" id="s-leaderboard"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div class="fin-wrap"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div style="font-size:48px;"&gt;🎉&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2 style="font-size:24px;font-weight:700;"&gt;That's a wrap!&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p class="sub"&gt;Check the host screen for the Hall of Fame&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;p style="color:#444;font-size:14px;margin-top:16px;"&gt;Thanks for playing, Lyft Procurement!&lt;/p&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p1">&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;script type="module"&gt;</p>
-<p class="p1">import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";</p>
-<p class="p1">import { getDatabase, ref, set, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";</p>
-<p class="p2"><br></p>
-<p class="p1">const firebaseConfig = {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>apiKey: "PASTE_HERE",</p>
-<p class="p1"><span class="Apple-converted-space">  </span>authDomain: "PASTE_HERE",</p>
-<p class="p1"><span class="Apple-converted-space">  </span>databaseURL: "PASTE_HERE",</p>
-<p class="p1"><span class="Apple-converted-space">  </span>projectId: "PASTE_HERE",</p>
-<p class="p1"><span class="Apple-converted-space">  </span>appId: "PASTE_HERE"</p>
-<p class="p1">};</p>
-<p class="p2"><br></p>
-<p class="p1">const app = initializeApp(firebaseConfig);</p>
-<p class="p1">const db = getDatabase(app);</p>
-<p class="p2"><br></p>
-<p class="p1">const SUPERLATIVES = [</p>
-<p class="p1"><span class="Apple-converted-space">  </span>{icon:"🧾",label:"Most likely to negotiate a restaurant bill"},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>{icon:"🕵️",label:"Best poker face in a vendor meeting"},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>{icon:"📋",label:"Would create a RACI chart for a birthday party"},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>{icon:"💻",label:"Most tabs open at once"},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>{icon:"📨",label:"Sends 'just circling back' the fastest after no reply"},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>{icon:"🤝",label:"Most likely to be on a first-name basis with every supplier"},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>{icon:"🌙",label:"Would reconcile invoices for fun on a Friday night"},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>{icon:"💬",label:"The one everyone Slacks before sending anything externally"},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>{icon:"📱",label:"Most likely to have a supplier's personal cell number"},</p>
-<p class="p1"><span class="Apple-converted-space">  </span>{icon:"🗂️",label:"Most likely to remember a PO number from 3 years ago"},</p>
-<p class="p1">];</p>
-<p class="p2"><br></p>
-<p class="p1">const NAMES = ["Angel Lin","Ashley Wood","Bradlee Dabu","Daniel Pappas","Dimitri Smith","Grace Nasr","Jan","Melissa Trager","Neha Kininge","Pooja Bansal","Rachel Goldstein","Raj Parikh","Rebecca Kim","Robert Lofthouse","Shradha Muktidoot","William Morris"];</p>
-<p class="p2"><br></p>
-<p class="p1">const voterId = Math.random().toString(36).slice(2);</p>
-<p class="p1">set(ref(db,`voters/${voterId}`), true);</p>
-<p class="p2"><br></p>
-<p class="p1">let myVotes = {};</p>
-<p class="p1">let lastPhase = "";</p>
-<p class="p1">let lastIdx = -1;</p>
-<p class="p2"><br></p>
-<p class="p1">function show(id) {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.querySelectorAll(".screen").forEach(s=&gt;s.classList.remove("active"));</p>
-<p class="p1"><span class="Apple-converted-space">  </span>document.getElementById(id).classList.add("active");</p>
-<p class="p1">}</p>
-<p class="p2"><br></p>
-<p class="p1">onValue(ref(db,"gameState"), snap =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (!snap.exists()) return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>const {phase, questionIdx} = snap.val();</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (phase === lastPhase &amp;&amp; questionIdx === lastIdx) return;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>lastPhase = phase; lastIdx = questionIdx;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (phase === "lobby") { show("s-lobby"); return; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (phase === "leaderboard") { show("s-leaderboard"); return; }</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>const s = SUPERLATIVES[questionIdx];</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (phase === "question") {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>show("s-question");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("q-num").textContent = `Award ${questionIdx+1} of ${SUPERLATIVES.length}`;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("q-prog").style.width = Math.round(((questionIdx+1)/SUPERLATIVES.length)*100)+"%";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("q-icon").textContent = s.icon;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("q-label").textContent = s.label;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const namesEl = document.getElementById("q-names");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const votedWrap = document.getElementById("q-voted");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (myVotes[questionIdx]) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>namesEl.style.display = "none";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>votedWrap.style.display = "flex";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById("q-voted-name").textContent = myVotes[questionIdx];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>namesEl.style.display = "block";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>votedWrap.style.display = "none";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>namesEl.innerHTML = "";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>NAMES.forEach(name =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>const btn = document.createElement("button");</p>
-<p class="p1"><span class="Apple-converted-space">        </span>btn.className = "name-btn";</p>
-<p class="p1"><span class="Apple-converted-space">        </span>btn.textContent = name;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>btn.onclick = () =&gt; {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>if (myVotes[questionIdx]) return;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>myVotes[questionIdx] = name;</p>
-<p class="p1"><span class="Apple-converted-space">          </span>runTransaction(ref(db,`votes/${questionIdx}/${name}`), v =&gt; (v||0)+1);</p>
-<p class="p1"><span class="Apple-converted-space">          </span>namesEl.style.display = "none";</p>
-<p class="p1"><span class="Apple-converted-space">          </span>votedWrap.style.display = "flex";</p>
-<p class="p1"><span class="Apple-converted-space">          </span>document.getElementById("q-voted-name").textContent = name;</p>
-<p class="p1"><span class="Apple-converted-space">        </span>};</p>
-<p class="p1"><span class="Apple-converted-space">        </span>namesEl.appendChild(btn);</p>
-<p class="p1"><span class="Apple-converted-space">      </span>});</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>if (phase === "results") {</p>
-<p class="p1"><span class="Apple-converted-space">    </span>show("s-results");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("r-icon").textContent = s.icon;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById("r-label").textContent = s.label;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const myVote = myVotes[questionIdx];</p>
-<p class="p1"><span class="Apple-converted-space">    </span>const myVoteEl = document.getElementById("r-my-vote");</p>
-<p class="p1"><span class="Apple-converted-space">    </span>if (myVote) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>myVoteEl.style.display = "block";</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById("r-my-vote-name").textContent = myVote;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>myVoteEl.style.display = "none";</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>}</p>
-<p class="p1">});</p>
-<p class="p1">&lt;/script&gt;</p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+
+<div class="screen active center" id="s-lobby">
+  <div style="font-size:48px;margin-bottom:16px;">🏆</div>
+  <h1 style="font-size:28px;font-weight:700;margin-bottom:8px;">Procurement Oscars</h1>
+  <p class="sub" style="margin-bottom:4px;">by Lyft Procurement</p>
+  <div class="badge">
+    <p style="color:#888;margin-bottom:16px;">Waiting for the host to start...</p>
+    <div><span class="dot" style="opacity:.4;"></span><span class="dot" style="opacity:.7;"></span><span class="dot" style="opacity:1;"></span></div>
+  </div>
+</div>
+
+<div class="screen" id="s-question" style="padding-top:8px;">
+  <div class="header">
+    <span style="color:#555;font-size:13px;" id="q-num"></span>
+    <span class="pink" style="font-weight:700;font-size:13px;">Lyft Oscars</span>
+  </div>
+  <div class="prog-bar-bg"><div class="prog-bar-fill" id="q-prog"></div></div>
+  <div class="award-icon" id="q-icon"></div>
+  <div class="award-lbl" id="q-label"></div>
+  <div id="q-names"></div>
+  <div class="voted-wrap" id="q-voted" style="display:none;">
+    <div class="voted-icon">✅</div>
+    <div style="color:#888;font-size:16px;">You voted for</div>
+    <div class="voted-name" id="q-voted-name"></div>
+    <div class="waiting">Waiting for results on the big screen...</div>
+  </div>
+</div>
+
+<div class="screen center" id="s-results">
+  <div style="font-size:40px;margin-bottom:12px;" id="r-icon"></div>
+  <div style="font-size:14px;color:#666;margin-bottom:8px;" id="r-label"></div>
+  <div style="font-size:18px;color:#888;margin-bottom:8px;">Check the big screen!</div>
+  <div style="font-size:32px;">🎬</div>
+  <div id="r-my-vote" style="margin-top:24px;background:#111;border-radius:12px;padding:14px 24px;display:none;">
+    <div style="color:#666;font-size:13px;">You voted for</div>
+    <div class="pink" style="font-weight:700;font-size:18px;" id="r-my-vote-name"></div>
+  </div>
+</div>
+
+<div class="screen center" id="s-leaderboard">
+  <div class="fin-wrap">
+    <div style="font-size:48px;">🎉</div>
+    <h2 style="font-size:24px;font-weight:700;">That's a wrap!</h2>
+    <p class="sub">Check the host screen for the Hall of Fame</p>
+    <p style="color:#444;font-size:14px;margin-top:16px;">Thanks for playing, Lyft Procurement!</p>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCsLcoMxybDL7ZKy6ga_hUyg5g-GhIdulc",
+  authDomain: "procurement-oscars.firebaseapp.com",
+  databaseURL: "https://procurement-oscars-default-rtdb.firebaseio.com",
+  projectId: "procurement-oscars",
+  appId: "1:895558124316:web:4802ddc9aa01598eac70d9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const SUPERLATIVES = [
+  {icon:"🧾",label:"Most likely to negotiate a restaurant bill"},
+  {icon:"🕵️",label:"Best poker face in a vendor meeting"},
+  {icon:"📋",label:"Would create a RACI chart for a birthday party"},
+  {icon:"💻",label:"Most tabs open at once"},
+  {icon:"📨",label:"Sends 'just circling back' the fastest after no reply"},
+  {icon:"🤝",label:"Most likely to be on a first-name basis with every supplier"},
+  {icon:"🌙",label:"Would reconcile invoices for fun on a Friday night"},
+  {icon:"💬",label:"The one everyone Slacks before sending anything externally"},
+  {icon:"📱",label:"Most likely to have a supplier's personal cell number"},
+  {icon:"🗂️",label:"Most likely to remember a PO number from 3 years ago"},
+];
+
+const NAMES = ["Angel Lin","Ashley Wood","Bradlee Dabu","Daniel Pappas","Dimitri Smith","Grace Nasr","Jan","Melissa Trager","Neha Kininge","Pooja Bansal","Rachel Goldstein","Raj Parikh","Rebecca Kim","Robert Lofthouse","Shradha Muktidoot","William Morris"];
+
+const voterId = Math.random().toString(36).slice(2);
+set(ref(db,`voters/${voterId}`), true);
+
+let myVotes = {};
+let lastPhase = "";
+let lastIdx = -1;
+
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+onValue(ref(db,"gameState"), snap => {
+  if (!snap.exists()) return;
+  const {phase, questionIdx} = snap.val();
+  if (phase === lastPhase && questionIdx === lastIdx) return;
+  lastPhase = phase; lastIdx = questionIdx;
+
+  if (phase === "lobby") { show("s-lobby"); return; }
+  if (phase === "leaderboard") { show("s-leaderboard"); return; }
+
+  const s = SUPERLATIVES[questionIdx];
+
+  if (phase === "question") {
+    show("s-question");
+    document.getElementById("q-num").textContent = `Award ${questionIdx+1} of ${SUPERLATIVES.length}`;
+    document.getElementById("q-prog").style.width = Math.round(((questionIdx+1)/SUPERLATIVES.length)*100)+"%";
+    document.getElementById("q-icon").textContent = s.icon;
+    document.getElementById("q-label").textContent = s.label;
+    const namesEl = document.getElementById("q-names");
+    const votedWrap = document.getElementById("q-voted");
+    if (myVotes[questionIdx]) {
+      namesEl.style.display = "none";
+      votedWrap.style.display = "flex";
+      document.getElementById("q-voted-name").textContent = myVotes[questionIdx];
+    } else {
+      namesEl.style.display = "block";
+      votedWrap.style.display = "none";
+      namesEl.innerHTML = "";
+      NAMES.forEach(name => {
+        const btn = document.createElement("button");
+        btn.className = "name-btn";
+        btn.textContent = name;
+        btn.onclick = () => {
+          if (myVotes[questionIdx]) return;
+          myVotes[questionIdx] = name;
+          runTransaction(ref(db,`votes/${questionIdx}/${name}`), v => (v||0)+1);
+          namesEl.style.display = "none";
+          votedWrap.style.display = "flex";
+          document.getElementById("q-voted-name").textContent = name;
+        };
+        namesEl.appendChild(btn);
+      });
+    }
+  }
+
+  if (phase === "results") {
+    show("s-results");
+    document.getElementById("r-icon").textContent = s.icon;
+    document.getElementById("r-label").textContent = s.label;
+    const myVote = myVotes[questionIdx];
+    const myVoteEl = document.getElementById("r-my-vote");
+    if (myVote) {
+      myVoteEl.style.display = "block";
+      document.getElementById("r-my-vote-name").textContent = myVote;
+    } else {
+      myVoteEl.style.display = "none";
+    }
+  }
+});
+</script>
 </body>
 </html>
