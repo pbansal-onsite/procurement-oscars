@@ -56,6 +56,10 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 @keyframes pop{0%{transform:scale(.8);opacity:0;}70%{transform:scale(1.08);}100%{transform:scale(1);opacity:1;}}
 .fade-up{animation:fadeUp .5s ease forwards;}
 .pop{animation:pop .45s ease forwards;}
+.tie-mode{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;}
+.tie-name{color:#FF00BF;font-size:36px;font-weight:700;animation:pop .45s ease forwards;}
+.tie-vs{color:#444;font-size:20px;font-weight:400;margin:0 4px;}
+@keyframes tieShake{0%,100%{transform:translateX(0);}20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
 </style>
 </head>
 <body>
@@ -155,7 +159,7 @@ let currentIdx = 0;
 let allVotes = {};
 let voterCount = 0;
 
-const voteUrl = "https://pbansal-onsite.github.io/procurement-oscars/vote.html";
+const voteUrl = window.location.origin + "/vote.html";
 document.getElementById("vote-url").textContent = voteUrl;
 document.getElementById("qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(voteUrl)}`;
 
@@ -211,10 +215,32 @@ window.showResults = function() {
   set(ref(db,"gameState"), {phase:"results", questionIdx:currentIdx});
   document.getElementById("r-icon").textContent = s.icon;
   document.getElementById("r-label").textContent = s.label;
-  const winnerName = entries[0] ? entries[0][0] : "No votes";
-  const winnerVotes = entries[0] ? entries[0][1] : 0;
-  document.getElementById("r-winner-name").textContent = winnerName;
-  document.getElementById("r-winner-tally").textContent = `${winnerVotes} of ${total} vote${total!==1?"s":""}`;
+  const topVotes = entries[0] ? entries[0][1] : 0;
+  const tied = entries.filter(e => e[1] === topVotes);
+  const isTie = tied.length > 1;
+
+  const tiePhrases = [
+    { eyebrow: "Nobody wins. Everybody loses. 🤝", sub: "The committee is shook." },
+    { eyebrow: "It's a procurement standoff. 🔫", sub: "Both sides refuse to renegotiate." },
+    { eyebrow: "This has never happened in Oscar history.", sub: "Legal is drafting a RACI chart for this situation." },
+    { eyebrow: "A tie?! Who approved this?!", sub: "Someone's getting a 'just circling back' about this." },
+    { eyebrow: "The spreadsheet has spoken... nothing.", sub: "Both names have been escalated to VP level." },
+    { eyebrow: "Statistically improbable. Emotionally devastating.", sub: "The vendor is very confused." },
+    { eyebrow: "Plot twist. Nobody saw this coming.", sub: "Except the person with 47 tabs open." },
+  ];
+  const phrase = tiePhrases[Math.floor(Math.random() * tiePhrases.length)];
+
+  if (isTie) {
+    document.getElementById("r-winner-name").innerHTML = tied.map(e => `<span class="tie-name">${e[0]}</span>`).join('<span class="tie-vs">vs</span>');
+    document.getElementById("r-winner-name").classList.add("tie-mode");
+    document.getElementById("r-winner-block").querySelector(".eyebrow").textContent = phrase.eyebrow;
+    document.getElementById("r-winner-tally").textContent = `${topVotes} vote${topVotes!==1?"s":""} each · ${phrase.sub}`;
+  } else {
+    document.getElementById("r-winner-name").textContent = entries[0] ? entries[0][0] : "No votes";
+    document.getElementById("r-winner-name").classList.remove("tie-mode");
+    document.getElementById("r-winner-block").querySelector(".eyebrow").textContent = "and the Oscar goes to...";
+    document.getElementById("r-winner-tally").textContent = `${topVotes} of ${total} vote${total!==1?"s":""}`;
+  }
   const barsEl = document.getElementById("r-bars");
   barsEl.innerHTML = "";
   entries.slice(0,6).forEach(([name,cnt],i) => {
