@@ -12,7 +12,6 @@ body{font-family:system-ui,sans-serif;background:#0a0a0f;color:#fff;min-height:1
 .pink{color:#FF00BF;}
 .sub{color:#666;font-size:15px;}
 .badge{background:#111;border:1px solid #222;border-radius:14px;padding:20px 28px;margin-top:24px;}
-.dot{width:8px;height:8px;border-radius:50%;background:#FF00BF;display:inline-block;margin:0 3px;}
 .prog-bar-bg{height:3px;background:#1a1a1a;border-radius:2px;margin-bottom:20px;}
 .prog-bar-fill{height:3px;background:#FF00BF;border-radius:2px;transition:width .4s;}
 .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
@@ -26,20 +25,45 @@ body{font-family:system-ui,sans-serif;background:#0a0a0f;color:#fff;min-height:1
 .voted-name{font-size:22px;font-weight:700;color:#FF00BF;margin-top:4px;}
 .waiting{color:#555;font-size:14px;margin-top:8px;}
 .fin-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:16px;}
+
+/* Name picker */
+.picker-wrap{padding:8px 0;}
+.picker-title{font-size:22px;font-weight:700;margin-bottom:4px;}
+.picker-sub{color:#666;font-size:14px;margin-bottom:20px;}
+.picker-btn{display:flex;align-items:center;gap:12px;width:100%;background:#111;color:#ccc;border:1px solid #222;border-radius:12px;padding:12px 14px;font-size:15px;cursor:pointer;margin-bottom:8px;transition:all .15s;}
+.picker-btn:active{transform:scale(.98);}
+.picker-btn.taken{opacity:.35;pointer-events:none;}
+.picker-avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;background:#1a1a2e;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#FF00BF;}
+.picker-avatar img{width:100%;height:100%;object-fit:cover;object-position:top;}
 </style>
 </head>
 <body>
 
-<div class="screen active center" id="s-lobby">
+<!-- Name picker -->
+<div class="screen active" id="s-picker">
+  <div style="font-size:36px;text-align:center;margin-bottom:8px;padding-top:8px;">👋</div>
+  <div class="picker-title" style="text-align:center;">Who are you?</div>
+  <div class="picker-sub" style="text-align:center;">Pick your name to join</div>
+  <div id="picker-names"></div>
+</div>
+
+<!-- Lobby / waiting -->
+<div class="screen center" id="s-lobby">
   <div style="font-size:48px;margin-bottom:16px;">🏆</div>
   <h1 style="font-size:28px;font-weight:700;margin-bottom:8px;">Procurement Oscars</h1>
   <p class="sub" style="margin-bottom:4px;">by Lyft Procurement</p>
   <div class="badge">
-    <p style="color:#888;margin-bottom:16px;">Waiting for the host to start...</p>
-    <div><span class="dot" style="opacity:.4;"></span><span class="dot" style="opacity:.7;"></span><span class="dot" style="opacity:1;"></span></div>
+    <p style="color:#888;margin-bottom:4px;">You're in, <span class="pink" id="lobby-name" style="font-weight:700;"></span>! 🎉</p>
+    <p style="color:#555;font-size:14px;margin-top:8px;">Waiting for the host to start...</p>
+    <div style="margin-top:16px;display:flex;gap:6px;justify-content:center;">
+      <div style="width:8px;height:8px;border-radius:50%;background:#FF00BF;opacity:.4;"></div>
+      <div style="width:8px;height:8px;border-radius:50%;background:#FF00BF;opacity:.7;"></div>
+      <div style="width:8px;height:8px;border-radius:50%;background:#FF00BF;opacity:1;"></div>
+    </div>
   </div>
 </div>
 
+<!-- Voting screen -->
 <div class="screen" id="s-question" style="padding-top:8px;">
   <div class="header">
     <span style="color:#555;font-size:13px;" id="q-num"></span>
@@ -57,6 +81,7 @@ body{font-family:system-ui,sans-serif;background:#0a0a0f;color:#fff;min-height:1
   </div>
 </div>
 
+<!-- Results -->
 <div class="screen center" id="s-results">
   <div style="font-size:40px;margin-bottom:12px;" id="r-icon"></div>
   <div style="font-size:14px;color:#666;margin-bottom:8px;" id="r-label"></div>
@@ -68,12 +93,13 @@ body{font-family:system-ui,sans-serif;background:#0a0a0f;color:#fff;min-height:1
   </div>
 </div>
 
+<!-- Leaderboard -->
 <div class="screen center" id="s-leaderboard">
   <div class="fin-wrap">
     <div style="font-size:48px;">🎉</div>
     <h2 style="font-size:24px;font-weight:700;">That's a wrap!</h2>
     <p class="sub">Check the host screen for the Hall of Fame</p>
-    <p style="color:#444;font-size:14px;margin-top:16px;">Thanks for playing, Lyft Procurement!</p>
+    <p style="color:#444;font-size:14px;margin-top:16px;">Thanks for playing, Lyft Procurement! 🎬</p>
   </div>
 </div>
 
@@ -92,91 +118,153 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-const SUPERLATIVES = [
-  {icon:"🧾",label:"Most likely to negotiate a restaurant bill"},
-  {icon:"🕵️",label:"Best poker face in a vendor meeting"},
-  {icon:"📋",label:"Would create a RACI chart for a birthday party"},
-  {icon:"💻",label:"Most tabs open at once"},
-  {icon:"📨",label:"Sends 'just circling back' the fastest after no reply"},
-  {icon:"🤝",label:"Most likely to be on a first-name basis with every supplier"},
-  {icon:"🌙",label:"Would reconcile invoices for fun on a Friday night"},
-  {icon:"💬",label:"The one everyone Slacks before sending anything externally"},
-  {icon:"📱",label:"Most likely to have a supplier's personal cell number"},
-  {icon:"🗂️",label:"Most likely to remember a PO number from 3 years ago"},
-];
+const BASE = "https://pbansal-onsite.github.io/procurement-oscars/";
 
-const NAMES = ["Angel Lin","Ashley Wood","Bradlee Dabu","Daniel Pappas","Dimitri Smith","Grace Nasr","Jan","Melissa Trager","Neha Kininge","Pooja Bansal","Rachel Goldstein","Raj Parikh","Rebecca Kim","Robert Lofthouse","Shradha Muktidoot","William Morris"];
+const AVATARS = {
+  "Angel Lin": "angel.jpg",
+  "Ashley Wood": "ashley.jpg",
+  "Bradlee Dabu": "bradlee.png",
+  "Daniel Pappas": "daniel.png",
+  "Dimitri Smith": "dimitri.png",
+  "Grace Nasr": "grace.jpg",
+  "Melissa Trager": "melissa.png",
+  "Pooja Bansal": "pooja.jpg",
+  "Rachel Goldstein": "rachel.jpg",
+  "Raj Parikh": "raj.jpg",
+  "Rebecca Kim": "rebecca.jpg",
+  "Robert Lofthouse": "robert.jpg",
+  "Shradha Muktidoot": "shradha.jpg",
+  "William Morris": "william.jpg",
+  "Jan": null,
+  "Neha Kininge": null,
+};
+
+const ALL_NAMES = ["Angel Lin","Ashley Wood","Bradlee Dabu","Daniel Pappas","Dimitri Smith","Grace Nasr","Jan","Melissa Trager","Neha Kininge","Pooja Bansal","Rachel Goldstein","Raj Parikh","Rebecca Kim","Robert Lofthouse","Shradha Muktidoot","William Morris"];
 
 const voterId = Math.random().toString(36).slice(2);
-set(ref(db,`voters/${voterId}`), true);
-
+let myName = null;
 let myVotes = {};
 let lastPhase = "";
 let lastIdx = -1;
+let takenNames = new Set();
+
+// Listen for already-taken names
+onValue(ref(db, "voterNames"), snap => {
+  takenNames = new Set(snap.exists() ? Object.values(snap.val()) : []);
+  renderPicker();
+});
+
+function renderPicker() {
+  const cont = document.getElementById("picker-names");
+  cont.innerHTML = "";
+  ALL_NAMES.forEach(name => {
+    const taken = takenNames.has(name) && name !== myName;
+    const btn = document.createElement("button");
+    btn.className = "picker-btn" + (taken ? " taken" : "");
+    const file = AVATARS[name];
+    const avatarEl = document.createElement("div");
+    avatarEl.className = "picker-avatar";
+    if (file) {
+      avatarEl.innerHTML = `<img src="${BASE}${file}" alt="${name}" onerror="this.parentElement.textContent='${name.split(' ').map(p=>p[0]).join('')}'">`;
+    } else {
+      avatarEl.textContent = name.split(' ').map(p=>p[0]).join('');
+    }
+    btn.appendChild(avatarEl);
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = name + (taken ? " (joined)" : "");
+    btn.appendChild(nameSpan);
+    btn.onclick = () => joinAs(name);
+    cont.appendChild(btn);
+  });
+}
+
+function joinAs(name) {
+  myName = name;
+  set(ref(db, `voters/${voterId}`), true);
+  set(ref(db, `voterNames/${voterId}`), name);
+  document.getElementById("lobby-name").textContent = name.split(' ')[0];
+  show("s-lobby");
+  listenToGame();
+}
+
+function listenToGame() {
+  onValue(ref(db, "gameState"), snap => {
+    if (!snap.exists()) return;
+    const {phase, questionIdx} = snap.val();
+    if (phase === lastPhase && questionIdx === lastIdx) return;
+    lastPhase = phase; lastIdx = questionIdx;
+
+    if (phase === "lobby") { show("s-lobby"); return; }
+    if (phase === "leaderboard") { show("s-leaderboard"); return; }
+
+    const SUPERLATIVES = [
+      {icon:"🧾",label:"Most likely to negotiate a restaurant bill"},
+      {icon:"🕵️",label:"Best poker face in a vendor meeting"},
+      {icon:"📋",label:"Would create a RACI chart for a birthday party"},
+      {icon:"💻",label:"Most tabs open at once"},
+      {icon:"📨",label:"Sends 'just circling back' the fastest after no reply"},
+      {icon:"🤝",label:"Most likely to be on a first-name basis with every supplier"},
+      {icon:"🌙",label:"Would reconcile invoices for fun on a Friday night"},
+      {icon:"💬",label:"The one everyone Slacks before sending anything externally"},
+      {icon:"📱",label:"Most likely to have a supplier's personal cell number"},
+      {icon:"🗂️",label:"Most likely to remember a PO number from 3 years ago"},
+    ];
+
+    const s = SUPERLATIVES[questionIdx];
+
+    if (phase === "question") {
+      show("s-question");
+      document.getElementById("q-num").textContent = `Award ${questionIdx+1} of ${SUPERLATIVES.length}`;
+      document.getElementById("q-prog").style.width = Math.round(((questionIdx+1)/SUPERLATIVES.length)*100)+"%";
+      document.getElementById("q-icon").textContent = s.icon;
+      document.getElementById("q-label").textContent = s.label;
+      const namesEl = document.getElementById("q-names");
+      const votedWrap = document.getElementById("q-voted");
+      if (myVotes[questionIdx]) {
+        namesEl.style.display = "none";
+        votedWrap.style.display = "flex";
+        document.getElementById("q-voted-name").textContent = myVotes[questionIdx];
+      } else {
+        namesEl.style.display = "block";
+        votedWrap.style.display = "none";
+        namesEl.innerHTML = "";
+        ALL_NAMES.filter(n => n !== myName).forEach(name => {
+          const btn = document.createElement("button");
+          btn.className = "name-btn";
+          btn.textContent = name;
+          btn.onclick = () => {
+            if (myVotes[questionIdx]) return;
+            myVotes[questionIdx] = name;
+            runTransaction(ref(db, `votes/${questionIdx}/${name}`), v => (v||0)+1);
+            namesEl.style.display = "none";
+            votedWrap.style.display = "flex";
+            document.getElementById("q-voted-name").textContent = name;
+          };
+          namesEl.appendChild(btn);
+        });
+      }
+    }
+
+    if (phase === "results") {
+      show("s-results");
+      document.getElementById("r-icon").textContent = s.icon;
+      document.getElementById("r-label").textContent = s.label;
+      const myVote = myVotes[questionIdx];
+      const myVoteEl = document.getElementById("r-my-vote");
+      if (myVote) {
+        myVoteEl.style.display = "block";
+        document.getElementById("r-my-vote-name").textContent = myVote;
+      } else {
+        myVoteEl.style.display = "none";
+      }
+    }
+  });
+}
 
 function show(id) {
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
-
-onValue(ref(db,"gameState"), snap => {
-  if (!snap.exists()) return;
-  const {phase, questionIdx} = snap.val();
-  if (phase === lastPhase && questionIdx === lastIdx) return;
-  lastPhase = phase; lastIdx = questionIdx;
-
-  if (phase === "lobby") { show("s-lobby"); return; }
-  if (phase === "leaderboard") { show("s-leaderboard"); return; }
-
-  const s = SUPERLATIVES[questionIdx];
-
-  if (phase === "question") {
-    show("s-question");
-    document.getElementById("q-num").textContent = `Award ${questionIdx+1} of ${SUPERLATIVES.length}`;
-    document.getElementById("q-prog").style.width = Math.round(((questionIdx+1)/SUPERLATIVES.length)*100)+"%";
-    document.getElementById("q-icon").textContent = s.icon;
-    document.getElementById("q-label").textContent = s.label;
-    const namesEl = document.getElementById("q-names");
-    const votedWrap = document.getElementById("q-voted");
-    if (myVotes[questionIdx]) {
-      namesEl.style.display = "none";
-      votedWrap.style.display = "flex";
-      document.getElementById("q-voted-name").textContent = myVotes[questionIdx];
-    } else {
-      namesEl.style.display = "block";
-      votedWrap.style.display = "none";
-      namesEl.innerHTML = "";
-      NAMES.forEach(name => {
-        const btn = document.createElement("button");
-        btn.className = "name-btn";
-        btn.textContent = name;
-        btn.onclick = () => {
-          if (myVotes[questionIdx]) return;
-          myVotes[questionIdx] = name;
-          runTransaction(ref(db,`votes/${questionIdx}/${name}`), v => (v||0)+1);
-          namesEl.style.display = "none";
-          votedWrap.style.display = "flex";
-          document.getElementById("q-voted-name").textContent = name;
-        };
-        namesEl.appendChild(btn);
-      });
-    }
-  }
-
-  if (phase === "results") {
-    show("s-results");
-    document.getElementById("r-icon").textContent = s.icon;
-    document.getElementById("r-label").textContent = s.label;
-    const myVote = myVotes[questionIdx];
-    const myVoteEl = document.getElementById("r-my-vote");
-    if (myVote) {
-      myVoteEl.style.display = "block";
-      document.getElementById("r-my-vote-name").textContent = myVote;
-    } else {
-      myVoteEl.style.display = "none";
-    }
-  }
-});
 </script>
 </body>
 </html>
