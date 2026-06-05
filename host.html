@@ -379,8 +379,7 @@ onValue(ref(db,"voterNames"), snap => {
     wrap.style.animationDelay = `${i * 0.08}s`;
     const head = document.createElement("div");
     head.className = "bobble-head";
-    head.style.animationDelay = `${(i * 0.3) % 2}s`;
-    head.innerHTML = makeAvatarHTML(name, 72);
+head.style.cssText = `animation-delay:${(i*0.3)%2}s;overflow:visible;`;    head.innerHTML = makeAvatarHTML(name, 72);
     const label = document.createElement("div");
     label.className = "bobble-name";
     label.textContent = name.split(' ')[0]; // first name only for space
