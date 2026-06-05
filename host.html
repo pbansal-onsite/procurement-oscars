@@ -340,8 +340,9 @@ sorted.forEach(([name,cnt],i) => {
 }
 
 window.resetGame = function() {
-  remove(ref(db,"votes"));
   remove(ref(db,"voters"));
+  remove(ref(db,"voterNames"));
+  remove(ref(db,"votes"));
   set(ref(db,"gameState"),{phase:"lobby",questionIdx:0});
   allVotes = {};
   showScreen("s-lobby");
