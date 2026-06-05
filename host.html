@@ -56,6 +56,13 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 @keyframes pop{0%{transform:scale(.8);opacity:0;}70%{transform:scale(1.08);}100%{transform:scale(1);opacity:1;}}
 .fade-up{animation:fadeUp .5s ease forwards;}
 .pop{animation:pop .45s ease forwards;}
+  .bobble-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;animation:bobbleIn .5s cubic-bezier(.34,1.56,.64,1) forwards;}
+.bobble-head{width:72px;height:72px;border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 2.5s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 16px rgba(255,0,191,0.3);}
+.bobble-head img{width:100%;height:100%;object-fit:cover;object-position:top;}
+.bobble-name{font-size:11px;color:#888;text-align:center;max-width:72px;line-height:1.2;}
+.bobble-placeholder{width:72px;height:72px;border-radius:50%;border:3px dashed #333;background:#111;display:flex;align-items:center;justify-content:center;font-size:22px;color:#444;}
+@keyframes bobbleIn{0%{opacity:0;transform:scale(0) translateY(20px);}100%{opacity:1;transform:scale(1) translateY(0);}}
+@keyframes bobbleWobble{0%,100%{transform:rotate(-3deg);}25%{transform:rotate(3deg);}50%{transform:rotate(-2deg);}75%{transform:rotate(2deg);}}
 .tie-mode{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;}
 .tie-name{color:#FF00BF;font-size:36px;font-weight:700;animation:pop .45s ease forwards;}
 .tie-vs{color:#444;font-size:20px;font-weight:400;margin:0 4px;}
