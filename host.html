@@ -8,43 +8,30 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:system-ui,sans-serif;background:#0a0a0f;color:#fff;min-height:100vh;}
 
-/* ===== SCREEN SYSTEM — only .active screens are shown ===== */
+/* ===== SCREEN SYSTEM ===== */
 .screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:40px;position:relative;overflow:hidden;}
 .screen.active{display:flex;}
 
 /* ===== SCREEN-SPECIFIC BACKGROUNDS ===== */
-/* Lobby: deep radial bloom from bottom-left — feels like a spotlight opening */
 #s-lobby{background:radial-gradient(ellipse 80% 60% at 20% 110%,#2a0a1e 0%,#0a0a0f 60%);}
-/* Question: cool dark blue-black — keeps focus on the award text */
 #s-question{background:radial-gradient(ellipse 70% 50% at 50% 120%,#0d0d2a 0%,#0a0a0f 60%);}
-/* Results: warm pink bloom from center — dramatic reveal energy */
 #s-results{background:radial-gradient(ellipse 80% 60% at 50% 80%,#2a0a1a 0%,#0a0a0f 55%);}
-/* Leaderboard: rich deep purple — feels like closing ceremony */
 #s-leaderboard{background:radial-gradient(ellipse 100% 70% at 50% 100%,#1a0828 0%,#0a0a0f 60%);}
 
-/* ===== LYFT BRAND GRID — subtle repeating pattern overlay ===== */
-/* A faint dot grid gives the dark bg depth without being distracting */
-.screen::before{
-  content:"";position:absolute;top:0;left:0;width:100%;height:100%;
-  background-image:radial-gradient(circle,rgba(255,0,191,0.06) 1px,transparent 1px);
-  background-size:32px 32px;pointer-events:none;z-index:0;
-}
+/* ===== LYFT BRAND DOT GRID ===== */
+.screen::before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background-image:radial-gradient(circle,rgba(255,0,191,0.06) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;}
 
-/* ===== LYFT CORNER WORDMARK — bottom-right watermark ===== */
-.screen::after{
-  content:"LYFT";position:absolute;bottom:24px;right:32px;
-  font-size:11px;font-weight:700;letter-spacing:4px;
-  color:rgba(255,0,191,0.15);pointer-events:none;z-index:0;
-}
+/* ===== LYFT WATERMARK ===== */
+.screen::after{content:"LYFT";position:absolute;bottom:24px;right:32px;font-size:11px;font-weight:700;letter-spacing:4px;color:rgba(255,0,191,0.15);pointer-events:none;z-index:0;}
 
-/* ===== LOGO (top-left on all screens) ===== */
+/* ===== LOGO ===== */
 .logo{position:absolute;top:24px;left:32px;display:flex;align-items:center;gap:10px;z-index:10;}
 .logo-lyft{color:#FF00BF;font-weight:700;font-size:22px;letter-spacing:1px;text-shadow:0 0 20px rgba(255,0,191,0.4);}
 .logo-sep{color:#333;font-size:22px;}
 .logo-title{color:#666;font-size:16px;letter-spacing:.5px;}
 
-/* ===== PLAYER COUNTER BADGE (top-right) ===== */
-.counter-badge{position:absolute;top:24px;right:32px;background:rgba(255,0,191,0.08);border:1px solid rgba(255,0,191,0.25);border-radius:10px;padding:8px 16px;font-size:14px;color:#888;z-index:10;backdrop-filter:blur(4px);}
+/* ===== COUNTER BADGE ===== */
+.counter-badge{position:absolute;top:24px;right:32px;background:rgba(255,0,191,0.08);border:1px solid rgba(255,0,191,0.25);border-radius:10px;padding:8px 16px;font-size:14px;color:#888;z-index:10;}
 .counter-badge span{color:#FF00BF;font-weight:700;font-size:18px;margin-left:6px;}
 
 /* ===== TYPOGRAPHY ===== */
@@ -58,10 +45,10 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.12);color:#666;border-radius:10px;padding:8px 20px;font-size:13px;cursor:pointer;margin-top:16px;}
 .btn-ghost:hover{background:rgba(255,255,255,0.05);}
 
-/* ===== LOBBY — QR code wrapper ===== */
+/* ===== QR WRAP ===== */
 .qr-wrap{background:#fff;border-radius:20px;padding:20px;display:inline-block;margin-bottom:28px;box-shadow:0 0 40px rgba(255,0,191,0.2);}
 
-/* ===== VOTING SCREEN — award label & timer ===== */
+/* ===== VOTING SCREEN ===== */
 .award-num{color:#555;font-size:14px;margin-bottom:24px;letter-spacing:1px;text-transform:uppercase;}
 .award-icon{font-size:56px;margin-bottom:16px;filter:drop-shadow(0 0 16px rgba(255,0,191,0.4));}
 .timer-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;margin:32px 0 12px;}
@@ -72,7 +59,7 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 .votes-live{color:#555;font-size:15px;}
 .votes-live span{color:#FF00BF;font-weight:700;}
 
-/* ===== RESULTS — vote bar chart ===== */
+/* ===== RESULTS — BARS ===== */
 .bar-row{margin-bottom:12px;}
 .bar-label{display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px;}
 .bar-label .name{color:#ccc;}
@@ -83,20 +70,20 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 .bar-fill.winner{background:linear-gradient(90deg,#FF00BF,#ff66d9);}
 .bar-fill.other{background:rgba(255,255,255,0.12);}
 
-/* ===== RESULTS — winner announcement ===== */
+/* ===== RESULTS — WINNER ANNOUNCE ===== */
 .winner-announce{margin:16px 0 20px;}
 .winner-announce .eyebrow{color:#666;font-size:18px;margin-bottom:6px;letter-spacing:.5px;}
 .winner-announce .name{font-size:44px;font-weight:700;color:#FF00BF;text-shadow:0 0 30px rgba(255,0,191,0.5);}
 .winner-announce .tally{color:#555;font-size:16px;margin-top:4px;}
 
-/* ===== RESULTS — winner bobblehead row ===== */
+/* ===== RESULTS — WINNER BOBBLEHEADS ===== */
 .winner-bobbles{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:16px 0 20px;}
-.winner-bobble-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;animation:bobbleIn .5s cubic-bezier(.34,1.56,.64,1) forwards;}
-.winner-bobble-head{width:80px;height:80px;border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 1.8s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 32px rgba(255,0,191,0.6),0 0 8px rgba(255,0,191,0.3);}
+.winner-bobble-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;animation:bobbleIn .5s cubic-bezier(.34,1.56,.64,1) forwards;position:relative;}
+.winner-bobble-head{width:80px;height:80px;border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 1.8s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 32px rgba(255,0,191,0.6);}
 .winner-bobble-head img{width:100%;height:100%;object-fit:cover;object-position:top center;}
 .winner-bobble-name{font-size:11px;color:#888;text-align:center;max-width:80px;}
 
-/* ===== LEADERBOARD — award list rows ===== */
+/* ===== LEADERBOARD ROWS ===== */
 .lb-row{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:10px 16px;margin-bottom:8px;width:100%;}
 .lb-row.top1{border-color:rgba(255,0,191,0.4);background:rgba(255,0,191,0.06);}
 .lb-medal{font-size:20px;min-width:28px;}
@@ -104,7 +91,7 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 .lb-row.top1 .lb-name{color:#FF00BF;font-weight:700;}
 .lb-awards{color:#555;font-size:13px;}
 
-/* ===== PODIUM — 3-column podium graphic ===== */
+/* ===== PODIUM ===== */
 .podium-col{display:flex;flex-direction:column;align-items:center;gap:8px;}
 .podium-avatar{border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 2s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 24px rgba(255,0,191,0.5);}
 .podium-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;}
@@ -117,22 +104,23 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 .podium-block.p2{background:linear-gradient(180deg,rgba(170,170,170,0.1),rgba(170,170,170,0.02));border:1px solid rgba(170,170,170,0.3);width:90px;height:56px;color:#aaa;}
 .podium-block.p3{background:linear-gradient(180deg,rgba(205,127,50,0.1),rgba(205,127,50,0.02));border:1px solid rgba(205,127,50,0.3);width:80px;height:40px;color:#cd7f32;}
 .podium-enter{animation:bobbleIn 0.6s cubic-bezier(.34,1.56,.64,1) forwards;opacity:0;}
+.podium-col-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;}
 
-/* ===== CROWD — scattered small avatars bottom-right ===== */
+/* ===== CROWD ===== */
 .crowd-avatar{position:absolute;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.15);animation:bobbleWobble 2.5s ease-in-out infinite;}
 .crowd-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;}
 
-/* ===== LOBBY BOBBLEHEADS — pop in as players join ===== */
-.bobble-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;animation:bobbleIn .5s cubic-bezier(.34,1.56,.64,1) forwards;}
-.bobble-head{width:72px;height:72px;border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 2.5s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 20px rgba(255,0,191,0.35);position:relative;}
+/* ===== LOBBY BOBBLEHEADS — scattered randomly ===== */
+.bobble-wrap{display:flex;flex-direction:column;align-items:center;gap:4px;animation:bobbleIn .5s cubic-bezier(.34,1.56,.64,1) forwards;position:absolute;}
+.bobble-head{width:72px;height:72px;border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 2.5s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 20px rgba(255,0,191,0.35);}
 .bobble-head img{width:100%;height:100%;object-fit:cover;object-position:top center;}
-.bobble-name{font-size:11px;color:#666;text-align:center;max-width:72px;line-height:1.2;}
+.bobble-name{font-size:11px;color:#aaa;text-align:center;max-width:72px;line-height:1.2;}
 
-/* ===== LYFT CAP — worn by all bobbleheads ===== */
-.lyft-cap{position:absolute;top:-18px;left:50%;transform:translateX(-50%);z-index:20;pointer-events:none;animation:capRock 2.5s ease-in-out infinite;}
+/* ===== LYFT CAP ===== */
+.cap-above{position:absolute;top:-18px;left:50%;transform:translateX(-50%);z-index:20;pointer-events:none;animation:capRock 2.5s ease-in-out infinite;}
 @keyframes capRock{0%,100%{transform:translateX(-50%) rotate(-4deg);}50%{transform:translateX(-50%) rotate(4deg);}}
 
-/* ===== LYFT CAR — drives across lobby screen bottom ===== */
+/* ===== LYFT CAR ===== */
 .lyft-car-wrap{position:absolute;bottom:52px;z-index:10;animation:carDrive 8s linear infinite;}
 .lyft-car-shadow{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:110px;height:10px;background:rgba(255,0,191,0.2);border-radius:50%;filter:blur(4px);}
 .road-wrap{position:absolute;bottom:0;left:0;width:100%;height:52px;background:#141414;z-index:3;}
@@ -141,18 +129,18 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 @keyframes carDrive{0%{left:-180px;}100%{left:calc(100% + 20px);}}
 @keyframes roadScroll{from{background-position:0 0;}to{background-position:-128px 0;}}
 
-/* ===== TIE DISPLAY ===== */
+/* ===== TIE ===== */
 .tie-mode{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;}
 .tie-name{color:#FF00BF;font-size:36px;font-weight:700;animation:pop .45s ease forwards;text-shadow:0 0 20px rgba(255,0,191,0.5);}
 .tie-vs{color:#333;font-size:20px;font-weight:400;margin:0 4px;}
 
-/* ===== BACKGROUND GRAPHIC — large faded emoji behind each results screen ===== */
+/* ===== BG GRAPHIC ===== */
 .bg-graphic{position:absolute;font-size:280px;opacity:.03;pointer-events:none;user-select:none;z-index:0;top:50%;left:50%;transform:translate(-50%,-50%);animation:bgFloat 6s ease-in-out infinite;}
 
-/* ===== CONFETTI PIECES ===== */
+/* ===== CONFETTI ===== */
 .confetti-piece{position:absolute;border-radius:2px;animation:confettiFall 2.5s ease-in forwards;}
 
-/* ===== KEYFRAME ANIMATIONS ===== */
+/* ===== ANIMATIONS ===== */
 @keyframes pulseRing{0%{transform:scale(1);opacity:.8;}100%{transform:scale(1.7);opacity:0;}}
 @keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(500px) rotate(720deg);opacity:0;}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
@@ -160,32 +148,31 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 @keyframes bobbleIn{0%{opacity:0;transform:scale(0) translateY(20px);}100%{opacity:1;transform:scale(1) translateY(0);}}
 @keyframes bobbleWobble{0%,100%{transform:rotate(-3deg);}25%{transform:rotate(3deg);}50%{transform:rotate(-2deg);}75%{transform:rotate(2deg);}}
 @keyframes bgFloat{0%,100%{transform:translate(-50%,-50%) rotate(-3deg);}50%{transform:translate(-50%,-52%) rotate(3deg);}}
-@keyframes tieShake{0%,100%{transform:translateX(0);}20%{transform:translateX(-6px);}40%{transform:translateX(6px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}}
 .fade-up{animation:fadeUp .5s ease forwards;}
 .pop{animation:pop .45s ease forwards;}
 </style>
 </head>
 <body>
 
-<!-- ===================== LOBBY SCREEN =====================
-     Shown at the start. Displays QR code and bobbleheads
-     as players join. Host clicks "Start the Oscars" to begin.
--->
+<!-- ===================== LOBBY ===================== -->
 <div class="screen active" id="s-lobby">
   <div class="logo"><span class="logo-lyft">Lyft</span><span class="logo-sep">|</span><span class="logo-title">Procurement Oscars</span></div>
   <div class="counter-badge">Players joined <span id="voter-count">0</span></div>
-  <div class="fade-up" style="text-align:center;max-width:700px;">
+
+  <!-- Scattered bobbleheads fill the whole screen -->
+  <div id="bobble-grid" style="position:absolute;top:0;left:0;width:100%;height:calc(100% - 52px);pointer-events:none;z-index:1;"></div>
+
+  <!-- Central content on top -->
+  <div class="fade-up" style="text-align:center;max-width:700px;position:relative;z-index:2;">
     <div style="font-size:64px;margin-bottom:16px;">🏆</div>
     <h1>Procurement Oscars</h1>
     <p class="sub">Scan to join on your phone</p>
     <div class="qr-wrap"><img id="qr-img" src="" width="200" height="200" alt="QR code to join"></div>
-    <p style="color:#333;font-size:13px;font-family:monospace;margin-bottom:16px;" id="vote-url"></p>
-    <!-- Bobbleheads appear here as players scan in -->
-    <div id="bobble-grid" style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:16px;min-height:100px;position:relative;z-index:1;"></div>
-    <button class="btn" onclick="startQuestion(0)" style="position:relative;z-index:1;">Start the Oscars</button>
+    <p style="color:#333;font-size:13px;font-family:monospace;margin-bottom:24px;" id="vote-url"></p>
+    <button class="btn" onclick="startQuestion(0)">Start the Oscars</button>
   </div>
-  </div>
-  <!-- Lyft car drives across bottom of lobby -->
+
+  <!-- Lyft car drives across bottom -->
   <div class="road-wrap">
     <div class="road-edge"></div>
     <div class="road-stripe"></div>
@@ -208,11 +195,9 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
       <rect x="20" y="68" width="120" height="4" rx="2" fill="rgba(255,0,191,0.12)"/>
     </svg>
   </div>
+</div>
 
-<!-- ===================== QUESTION SCREEN =====================
-     Shows the award category, animated countdown timer,
-     and live vote count. Timer auto-advances to results.
--->
+<!-- ===================== QUESTION ===================== -->
 <div class="screen" id="s-question">
   <div class="logo"><span class="logo-lyft">Lyft</span><span class="logo-sep">|</span><span class="logo-title">Procurement Oscars</span></div>
   <div class="counter-badge">Votes in <span id="q-vote-count">0</span></div>
@@ -221,7 +206,6 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
     <div class="award-icon" id="q-icon"></div>
     <h2 id="q-label"></h2>
     <div class="timer-wrap">
-      <!-- Pulsing ring appears in last 3 seconds -->
       <div class="timer-ring" id="timer-ring"></div>
       <div class="timer-circle" id="timer-circle">10</div>
     </div>
@@ -231,14 +215,9 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
   </div>
 </div>
 
-<!-- ===================== RESULTS SCREEN =====================
-     Shows winner bobbleheads, animated vote bars, confetti,
-     and a funny tie message if applicable. Background graphic
-     is set dynamically per question.
--->
+<!-- ===================== RESULTS ===================== -->
 <div class="screen" id="s-results">
   <div class="logo"><span class="logo-lyft">Lyft</span><span class="logo-sep">|</span><span class="logo-title">Procurement Oscars</span></div>
-  <!-- Background emoji graphic (changes per question) -->
   <div class="bg-graphic" id="r-bg-graphic"></div>
   <div style="width:100%;max-width:660px;position:relative;z-index:1;">
     <div style="text-align:center;margin-bottom:20px;" class="fade-up">
@@ -249,7 +228,6 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
         <div class="name" id="r-winner-name"></div>
         <div class="tally" id="r-winner-tally"></div>
       </div>
-      <!-- Winner bobbleheads animate in after reveal -->
       <div class="winner-bobbles" id="winner-bobbles"></div>
     </div>
     <div id="r-bars" style="margin-bottom:28px;"></div>
@@ -257,15 +235,10 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
       <button class="btn" id="btn-next-award" onclick="nextAward()">Next award →</button>
     </div>
   </div>
-  <!-- Confetti container (populated by spawnConfetti()) -->
   <div id="confetti-container" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;"></div>
 </div>
 
-<!-- ===================== LEADERBOARD SCREEN =====================
-     Final screen. Shows a podium with 1st/2nd/3rd place bobbleheads,
-     a scattered crowd of remaining players bottom-right, and a
-     scrollable list of all award winners.
--->
+<!-- ===================== LEADERBOARD ===================== -->
 <div class="screen" id="s-leaderboard">
   <div class="logo"><span class="logo-lyft">Lyft</span><span class="logo-sep">|</span><span class="logo-title">Procurement Oscars</span></div>
   <div style="width:100%;max-width:860px;position:relative;">
@@ -273,16 +246,9 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
       <h2 style="margin-bottom:2px;">Hall of fame</h2>
       <p style="color:#666;font-size:15px;">Tonight's procurement legends</p>
     </div>
-
-    <!-- Podium row: 2nd | 1st | 3rd -->
     <div id="lb-podium" style="display:flex;align-items:flex-end;justify-content:center;gap:12px;margin:24px 0 8px;"></div>
-
-    <!-- Scrollable award list -->
     <div id="lb-rows" style="margin-top:8px;max-height:200px;overflow-y:auto;padding:0 4px;"></div>
-
-    <!-- Scattered crowd — everyone else bottom-right -->
     <div id="lb-crowd" style="position:absolute;bottom:-20px;right:0;width:200px;height:160px;pointer-events:none;"></div>
-
     <div style="text-align:center;margin-top:24px;">
       <button class="btn-ghost" onclick="resetGame()">Play again</button>
     </div>
@@ -306,83 +272,91 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // ─── Award definitions ────────────────────────────────────────────────────────
-// Each superlative has:
-//   icon   — emoji shown on question & results screen
-//   label  — award text shown to voters
-//   bg     — large background emoji shown faintly on results screen
 const SUPERLATIVES = [
-  {icon:"🧾", label:"Most likely to negotiate a restaurant bill",              bg:"🍽️"},
-  {icon:"🕵️", label:"Best poker face in a vendor meeting",                    bg:"🃏"},
-  {icon:"📋", label:"Would create a RACI chart for a birthday party",          bg:"🎂"},
-  {icon:"💻", label:"Most tabs open at once",                                  bg:"🖥️"},
-  {icon:"📨", label:"Sends 'just circling back' the fastest after no reply",   bg:"📬"},
-  {icon:"🤝", label:"Most likely to be on a first-name basis with every supplier", bg:"🏭"},
-  {icon:"🌙", label:"Would reconcile invoices for fun on a Friday night",      bg:"🧾"},
-  {icon:"💬", label:"The one everyone Slacks before sending anything externally", bg:"💬"},
-  {icon:"📱", label:"Most likely to have a supplier's personal cell number",   bg:"📞"},
-  {icon:"🗂️", label:"Most likely to remember a PO number from 3 years ago",   bg:"📁"},
+  {icon:"🧾", label:"Most likely to negotiate a restaurant bill",           bg:"🍽️"},
+  {icon:"🕵️", label:"Best poker face in a vendor meeting",                 bg:"🃏"},
+  {icon:"📋", label:"Would create a RACI chart for a birthday party",       bg:"🎂"},
+  {icon:"💻", label:"Most tabs open at once",                               bg:"🖥️"},
+  {icon:"📨", label:"Sends 'just circling back' the fastest after no reply",bg:"📬"},
+  {icon:"🤝", label:"Most likely to be on a first-name basis with every supplier",bg:"🏭"},
+  {icon:"🌙", label:"Would reconcile invoices for fun on a Friday night",   bg:"🧾"},
+  {icon:"💬", label:"The one everyone Slacks before sending anything externally",bg:"💬"},
+  {icon:"📱", label:"Most likely to have a supplier's personal cell number",bg:"📞"},
+  {icon:"🗂️", label:"Most likely to remember a PO number from 3 years ago",bg:"📁"},
 ];
 
 // ─── Player avatars ───────────────────────────────────────────────────────────
-// Maps each team member's name to their uploaded photo filename.
-// null = no photo yet (shows initials instead)
 const AVATARS = {
   "Angel Lin":"angel.jpg","Ashley Wood":"ashley.jpg","Bradlee Dabu":"bradlee.png",
   "Daniel Pappas":"daniel.png","Dimitri Smith":"dimitri.png","Grace Nasr":"grace.jpg",
   "Melissa Trager":"melissa.png","Pooja Bansal":"pooja.jpg","Rachel Goldstein":"rachel.jpg",
   "Raj Parikh":"raj.jpg","Rebecca Kim":"rebecca.jpg","Robert Lofthouse":"robert.jpg",
   "Shradha Muktidoot":"shradha.jpg","William Morris":"william.jpg",
-  "Jan":null, "Neha Kininge":null
+  "Jan":null,"Neha Kininge":null
 };
-
-// Base URL for all uploaded photos on GitHub Pages
 const BASE = "https://pbansal-onsite.github.io/procurement-oscars/";
 
 // ─── Game state ───────────────────────────────────────────────────────────────
-let timerInterval = null; // holds the setInterval reference for countdown
-let currentIdx = 0;       // which superlative we're currently on (0–9)
-let allVotes = {};        // all votes from Firebase, keyed by question index
-let voterCount = 0;       // number of players who have joined
+let timerInterval = null;
+let currentIdx = 0;
+let allVotes = {};
+let voterCount = 0;
 
 // ─── Lobby setup ─────────────────────────────────────────────────────────────
-// Set the QR code URL and display it — points directly to vote.html
 const voteUrl = "https://pbansal-onsite.github.io/procurement-oscars/vote.html";
 document.getElementById("vote-url").textContent = voteUrl;
 document.getElementById("qr-img").src =
   `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(voteUrl)}`;
 
-// Reset Firebase state — clears all votes and players from previous sessions
 set(ref(db,"gameState"), {phase:"lobby", questionIdx:0});
 remove(ref(db,"voters"));
 remove(ref(db,"voterNames"));
 remove(ref(db,"votes"));
 
 // ─── Live voter count ─────────────────────────────────────────────────────────
-// Listens for new voters joining and updates the counter badge
 onValue(ref(db,"voters"), snap => {
   voterCount = snap.exists() ? Object.keys(snap.val()).length : 0;
   document.getElementById("voter-count").textContent = voterCount;
   document.getElementById("q-total-voters").textContent = voterCount;
 });
 
-// ─── Lobby bobbleheads ────────────────────────────────────────────────────────
-// As each player selects their name on their phone, their bobblehead
-// pops onto the lobby screen in real time
+// ─── Lobby bobbleheads — scattered randomly across screen ────────────────────
+// Predefined positions (% from top-left) spread across the screen
+// avoiding the central content area
+const SCATTER_POS = [
+  {x:4,  y:10},{x:88, y:8 },{x:3,  y:55},{x:90, y:52},{x:6,  y:82},
+  {x:85, y:78},{x:20, y:6 },{x:72, y:5 },{x:15, y:78},{x:78, y:80},
+  {x:2,  y:32},{x:92, y:30},{x:22, y:88},{x:70, y:88},{x:10, y:92},
+  {x:82, y:92},
+];
+
 onValue(ref(db,"voterNames"), snap => {
   const grid = document.getElementById("bobble-grid");
   if (!grid) return;
   const joined = snap.exists() ? Object.values(snap.val()) : [];
   grid.innerHTML = "";
   joined.forEach((name, i) => {
+    const pos = SCATTER_POS[i % SCATTER_POS.length];
     const wrap = document.createElement("div");
     wrap.className = "bobble-wrap";
-    wrap.style.animationDelay = `${i * 0.08}s`;
+    wrap.style.cssText = `left:${pos.x}%;top:${pos.y}%;animation-delay:${i*0.08}s;`;
+
+    // Cap sits above the circle as a sibling (not inside overflow:hidden head)
+    const capEl = document.createElement("div");
+    capEl.className = "cap-above";
+    capEl.style.animationDelay = `${(i*0.2)%2}s`;
+    capEl.innerHTML = lyftCapSVG(Math.round(72*0.65));
+
     const head = document.createElement("div");
     head.className = "bobble-head";
-head.style.cssText = `animation-delay:${(i*0.3)%2}s;overflow:visible;`;    head.innerHTML = makeAvatarHTML(name, 72);
+    head.style.animationDelay = `${(i*0.3)%2}s`;
+    head.innerHTML = avatarImgHTML(name);
+
     const label = document.createElement("div");
     label.className = "bobble-name";
-    label.textContent = name.split(' ')[0]; // first name only for space
+    label.textContent = name.split(' ')[0];
+
+    wrap.appendChild(capEl);
     wrap.appendChild(head);
     wrap.appendChild(label);
     grid.appendChild(wrap);
@@ -390,7 +364,6 @@ head.style.cssText = `animation-delay:${(i*0.3)%2}s;overflow:visible;`;    head.
 });
 
 // ─── Live vote tracking ───────────────────────────────────────────────────────
-// Updates the "votes in: X / Y" counter during the question timer
 onValue(ref(db,"votes"), snap => {
   allVotes = snap.exists() ? snap.val() : {};
   if (document.getElementById("s-question").classList.contains("active")) {
@@ -402,8 +375,6 @@ onValue(ref(db,"votes"), snap => {
 });
 
 // ─── Start a question ────────────────────────────────────────────────────────
-// Called when host clicks "Start the Oscars" or "Next award"
-// Sets up the question screen and starts the 10-second countdown
 window.startQuestion = function(idx) {
   currentIdx = idx;
   clearInterval(timerInterval);
@@ -414,8 +385,6 @@ window.startQuestion = function(idx) {
   document.getElementById("q-label").textContent = s.label;
   document.getElementById("q-votes-in").textContent = "0";
   set(ref(db,"gameState"), {phase:"question", questionIdx:idx});
-
-  // Countdown timer — turns pink and pulses in last 3 seconds
   let t = 10;
   const circle = document.getElementById("timer-circle");
   const ring = document.getElementById("timer-ring");
@@ -431,32 +400,22 @@ window.startQuestion = function(idx) {
 };
 
 // ─── Show results ─────────────────────────────────────────────────────────────
-// Called when timer hits 0 or host clicks "Skip timer"
-// Renders: background graphic, winner name, winner bobbleheads,
-// vote bars, and confetti. Handles ties with funny messages.
 window.showResults = function() {
   clearInterval(timerInterval);
   const v = allVotes[currentIdx] || {};
   const entries = Object.entries(v).sort((a,b) => b[1]-a[1]);
   const total = entries.reduce((s,e) => s+e[1], 0);
   const s = SUPERLATIVES[currentIdx];
-
   showScreen("s-results");
   set(ref(db,"gameState"), {phase:"results", questionIdx:currentIdx});
-
-  // Set question icon and label
   document.getElementById("r-icon").textContent = s.icon;
   document.getElementById("r-label").textContent = s.label;
-
-  // Set the big faded background graphic for this question
   document.getElementById("r-bg-graphic").textContent = s.bg;
 
-  // ── Tie detection ──
   const topVotes = entries[0] ? entries[0][1] : 0;
   const tied = entries.filter(e => e[1] === topVotes);
   const isTie = tied.length > 1;
 
-  // Funny tie phrases — randomly selected each time
   const tiePhrases = [
     {eyebrow:"Nobody wins. Everybody loses. 🤝", sub:"The committee is shook."},
     {eyebrow:"It's a procurement standoff. 🔫", sub:"Both sides refuse to renegotiate."},
@@ -468,7 +427,6 @@ window.showResults = function() {
   ];
   const phrase = tiePhrases[Math.floor(Math.random() * tiePhrases.length)];
 
-  // ── Winner announcement text ──
   if (isTie) {
     document.getElementById("r-winner-name").innerHTML =
       tied.map(e => `<span class="tie-name">${e[0]}</span>`).join('<span class="tie-vs">vs</span>');
@@ -484,8 +442,7 @@ window.showResults = function() {
       `${topVotes} of ${total} vote${total!==1?"s":""}`;
   }
 
-  // ── Winner bobbleheads ──
-  // Shows bobblehead(s) for the winner(s) below the name announcement
+  // Winner bobbleheads with cap
   const bobblesEl = document.getElementById("winner-bobbles");
   bobblesEl.innerHTML = "";
   const winners = isTie ? tied : [entries[0]];
@@ -494,22 +451,25 @@ window.showResults = function() {
       const name = e[0];
       const wrap = document.createElement("div");
       wrap.className = "winner-bobble-wrap";
-      wrap.style.animationDelay = `${i * 0.15}s`;
+      wrap.style.animationDelay = `${i*0.15}s`;
+      const capEl = document.createElement("div");
+      capEl.className = "cap-above";
+      capEl.style.animationDelay = `${i*0.2}s`;
+      capEl.innerHTML = lyftCapSVG(Math.round(80*0.65));
       const head = document.createElement("div");
       head.className = "winner-bobble-head";
-      head.style.cssText = `animation-delay:${i*0.2}s;overflow:visible;`;
-      head.innerHTML = makeAvatarHTML(name, 80);
-      const label = document.createElement("div");
-      label.className = "winner-bobble-name";
-      label.textContent = name.split(' ')[0];
+      head.style.animationDelay = `${i*0.2}s`;
+      head.innerHTML = avatarImgHTML(name);
+      const lbl = document.createElement("div");
+      lbl.className = "winner-bobble-name";
+      lbl.textContent = name.split(' ')[0];
+      wrap.appendChild(capEl);
       wrap.appendChild(head);
-      wrap.appendChild(label);
+      wrap.appendChild(lbl);
       bobblesEl.appendChild(wrap);
     });
   }
 
-  // ── Vote bars ──
-  // Shows top 6 vote-getters as animated horizontal bars
   const barsEl = document.getElementById("r-bars");
   barsEl.innerHTML = "";
   entries.slice(0,6).forEach(([name,cnt], i) => {
@@ -518,27 +478,21 @@ window.showResults = function() {
     const isTied = isTie && cnt === topVotes;
     const row = document.createElement("div");
     row.className = "bar-row fade-up";
-    row.style.animationDelay = `${i * 0.1}s`;
+    row.style.animationDelay = `${i*0.1}s`;
     row.innerHTML = `
       <div class="bar-label">
         <span class="name ${isW||isTied?"winner":""}">${isW||isTied?"🏆 ":""}${name}</span>
         <span class="cnt">${cnt} vote${cnt!==1?"s":""} · ${pct}%</span>
       </div>
-      <div class="bar-bg">
-        <div class="bar-fill ${isW||isTied?"winner":"other"}" style="width:${pct}%"></div>
-      </div>`;
+      <div class="bar-bg"><div class="bar-fill ${isW||isTied?"winner":"other"}" style="width:${pct}%"></div></div>`;
     barsEl.appendChild(row);
   });
-
-  // Fire confetti for winners!
   if (entries[0]) spawnConfetti("confetti-container");
-
-  // Update next button label
   document.getElementById("btn-next-award").textContent =
     currentIdx < SUPERLATIVES.length-1 ? "Next award →" : "See leaderboard 🏆";
 };
 
-// ─── Advance to next award or leaderboard ─────────────────────────────────────
+// ─── Next award / leaderboard ─────────────────────────────────────────────────
 window.nextAward = function() {
   if (currentIdx < SUPERLATIVES.length-1) {
     window.startQuestion(currentIdx+1);
@@ -551,12 +505,7 @@ window.nextAward = function() {
 };
 
 // ─── Leaderboard ──────────────────────────────────────────────────────────────
-// Builds three sections:
-//   1. Podium — top 3 with big/medium bobbleheads and platform blocks
-//   2. Award list — scrollable list of all winners with medals
-//   3. Crowd — everyone not on the podium scattered in bottom-right corner
 function renderLeaderboard() {
-  // Tally wins per person
   const tally = {};
   SUPERLATIVES.forEach((_,i) => {
     const v = allVotes[i] || {};
@@ -565,8 +514,7 @@ function renderLeaderboard() {
   });
   const sorted = Object.entries(tally).sort((a,b) => b[1]-a[1]);
 
-  // ── Podium ──
-  // Layout: [2nd] [1st] [3rd] — classic Olympic podium order
+  // Podium — ties get same rank/style
   const podium = document.getElementById("lb-podium");
   podium.innerHTML = "";
   const topCnt = sorted[0]?.[1] ?? 0;
@@ -577,49 +525,57 @@ function renderLeaderboard() {
   }
   const slots = [sorted[1], sorted[0], sorted[2]];
   const podiumData = slots.map(e => e ? {name:e[0], cnt:e[1], ...getPodiumStyle(e[1])} : null);
+  const podiumDelays = [0.2, 0, 0.35];
+  const avatarDelays = [0.4, 0.1, 0.6];
+
   podiumData.forEach((p, i) => {
     if (!p) { podium.innerHTML += `<div style="width:${[90,110,80][i]}px;"></div>`; return; }
     const col = document.createElement("div");
     col.className = "podium-col podium-enter";
-    col.style.animationDelay = `${[0.2,0,0.35][i]}s`;
+    col.style.animationDelay = `${podiumDelays[i]}s`;
+
+    // Avatar with cap above
+    const colWrap = document.createElement("div");
+    colWrap.className = "podium-col-wrap";
+    const capEl = document.createElement("div");
+    capEl.className = "cap-above";
+    capEl.style.animationDelay = `${avatarDelays[i]}s`;
+    capEl.innerHTML = lyftCapSVG(Math.round(p.size*0.65));
     const avatarEl = document.createElement("div");
     avatarEl.className = `podium-avatar ${p.cls}`;
-    avatarEl.style.cssText = `width:${p.size}px;height:${p.size}px;animation-delay:${[0.4,0.1,0.6][i]}s;overflow:visible;`;
-    avatarEl.innerHTML = makeAvatarHTML(p.name, p.size);
+    avatarEl.style.cssText = `width:${p.size}px;height:${p.size}px;animation-delay:${avatarDelays[i]}s;`;
+    avatarEl.innerHTML = avatarImgHTML(p.name);
+    colWrap.appendChild(capEl);
+    colWrap.appendChild(avatarEl);
+
     const nameEl = document.createElement("div");
     nameEl.className = `podium-name ${p.cls}`;
     nameEl.textContent = p.name.split(' ')[0];
     const block = document.createElement("div");
     block.className = `podium-block ${p.cls}`;
     block.textContent = p.medal;
-    col.appendChild(avatarEl);
+    col.appendChild(colWrap);
     col.appendChild(nameEl);
     col.appendChild(block);
     podium.appendChild(col);
   });
 
-  // ── Award list ──
-  // Shows all winners in ranked order with medal and award count
+  // Award list
   const cont = document.getElementById("lb-rows");
   cont.innerHTML = "";
   let rank = 0;
   sorted.forEach(([name,cnt], i) => {
     if (i===0 || cnt < sorted[i-1][1]) rank = i;
     const medal = rank===0?"🥇":rank===1?"🥈":rank===2?"🥉":"";
-    const isTop = rank===0;
     const row = document.createElement("div");
-    row.className = `lb-row${isTop?" top1":""}`;
-    row.innerHTML = `
-      <span class="lb-medal">${medal}</span>
-      <span class="lb-name">${name}</span>
-      <span class="lb-awards">${cnt} award${cnt!==1?"s":""}</span>`;
+    row.className = `lb-row${rank===0?" top1":""}`;
+    row.innerHTML = `<span class="lb-medal">${medal}</span><span class="lb-name">${name}</span><span class="lb-awards">${cnt} award${cnt!==1?"s":""}</span>`;
     cont.appendChild(row);
   });
 
-  // ── Crowd ──
-  // Everyone who didn't make the podium gets scattered in the bottom-right corner
-  // like a little fan section cheering on the winners
-const podiumNames = new Set(podiumData.filter(Boolean).map(p => p.name));  const crowd = Object.keys(AVATARS).filter(n => !podiumNames.has(n));
+  // Crowd — everyone not on podium, scattered bottom-right
+  const podiumNames = new Set(podiumData.filter(Boolean).map(p => p.name));
+  const crowd = Object.keys(AVATARS).filter(n => !podiumNames.has(n));
   const crowdEl = document.getElementById("lb-crowd");
   crowdEl.innerHTML = "";
   const positions = [
@@ -629,17 +585,16 @@ const podiumNames = new Set(podiumData.filter(Boolean).map(p => p.name));  const
   ];
   crowd.forEach((name, i) => {
     const pos = positions[i % positions.length];
-    const size = 32 + Math.floor(Math.random()*10); // slight size variation
+    const size = 32 + Math.floor(Math.random()*10);
     const el = document.createElement("div");
     el.className = "crowd-avatar podium-enter";
     el.style.cssText = `width:${size}px;height:${size}px;left:${pos.x}px;top:${pos.y}px;animation-delay:${0.5+(i*0.06)}s;`;
-    el.innerHTML = makeAvatarHTML(name, size);
+    el.innerHTML = avatarImgHTML(name);
     crowdEl.appendChild(el);
   });
 }
 
-// ─── Reset game ───────────────────────────────────────────────────────────────
-// Clears all Firebase data and resets to lobby for a fresh round
+// ─── Reset ────────────────────────────────────────────────────────────────────
 window.resetGame = function() {
   remove(ref(db,"voters"));
   remove(ref(db,"voterNames"));
@@ -651,16 +606,14 @@ window.resetGame = function() {
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-// Show a screen by id, hide all others
 function showScreen(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-// Lyft cap SVG — placed on top of every bobblehead
-// size controls the width; the cap rocks left-right via CSS animation
+// Lyft cap SVG — rocks left-right via .cap-above CSS class
 function lyftCapSVG(size) {
-  return `<svg class="lyft-cap" width="${size}" height="${Math.round(size*0.62)}" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+  return `<svg width="${size}" height="${Math.round(size*0.62)}" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="2" y="20" width="76" height="18" rx="6" fill="#FF00BF"/>
     <rect x="14" y="4" width="46" height="20" rx="8" fill="#FF00BF"/>
     <rect x="0" y="28" width="20" height="10" rx="4" fill="#cc0099"/>
@@ -669,22 +622,19 @@ function lyftCapSVG(size) {
   </svg>`;
 }
 
-// Build avatar HTML — photo if available, initials fallback if not
-// Includes a Lyft cap floating above the head
-function makeAvatarHTML(name, size) {
+// Photo or initials — no cap (cap added as sibling above)
+function avatarImgHTML(name) {
   const file = AVATARS[name];
   const initials = name.split(' ').map(p=>p[0]).join('');
-  const capSize = Math.round(size * 0.65);
-  const cap = lyftCapSVG(capSize);
   if (file) {
-    return `${cap}<img src="${BASE}${file}" alt="${name}"
+    return `<img src="${BASE}${file}" alt="${name}"
       style="width:100%;height:100%;object-fit:cover;object-position:top center;"
-      onerror="this.parentElement.innerHTML='${cap}<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a2e;color:#FF00BF;font-weight:700;font-size:20px;\\'>${initials}</div>'">`;
+      onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a2e;color:#FF00BF;font-weight:700;font-size:20px;\\'>${initials}</div>'">`;
   }
-  return `${cap}<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a2e;color:#FF00BF;font-weight:700;font-size:20px;">${initials}</div>`;
+  return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a2e;color:#FF00BF;font-weight:700;font-size:20px;">${initials}</div>`;
 }
 
-// Spawn confetti — random colors, sizes and delays
+// Confetti burst
 function spawnConfetti(containerId) {
   const c = document.getElementById(containerId);
   c.innerHTML = "";
