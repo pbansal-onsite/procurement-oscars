@@ -211,7 +211,7 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
     </div>
     <div class="votes-live">votes in: <span id="q-votes-in">0</span> / <span id="q-total-voters">0</span></div>
     <br>
-    <button class="btn-ghost" onclick="showResults()">Skip timer</button>
+    <button class="btn-ghost" onclick="clearInterval(timerInterval);playBuzzer();setTimeout(()=>window.showResults(),400);">Skip timer</button>
   </div>
 </div>
 
@@ -313,6 +313,13 @@ remove(ref(db,"voters"));
 remove(ref(db,"voterNames"));
 remove(ref(db,"votes"));
 
+// Start lobby music — Web Audio requires a user gesture first,
+// so we attach it to the first click/touch on the page
+document.addEventListener('click', function startMusic() {
+  startLobbyMusic();
+  document.removeEventListener('click', startMusic);
+}, {once: true});
+
 // ─── Live voter count ─────────────────────────────────────────────────────────
 onValue(ref(db,"voters"), snap => {
   voterCount = snap.exists() ? Object.keys(snap.val()).length : 0;
@@ -376,6 +383,7 @@ onValue(ref(db,"votes"), snap => {
 
 // ─── Start a question ────────────────────────────────────────────────────────
 window.startQuestion = function(idx) {
+  stopLobbyMusic(); // stop lobby groove when game starts
   currentIdx = idx;
   clearInterval(timerInterval);
   const s = SUPERLATIVES[idx];
@@ -385,6 +393,7 @@ window.startQuestion = function(idx) {
   document.getElementById("q-label").textContent = s.label;
   document.getElementById("q-votes-in").textContent = "0";
   set(ref(db,"gameState"), {phase:"question", questionIdx:idx});
+  playDrumRoll(); // drum roll as question appears
   let t = 10;
   const circle = document.getElementById("timer-circle");
   const ring = document.getElementById("timer-ring");
@@ -394,8 +403,9 @@ window.startQuestion = function(idx) {
   timerInterval = setInterval(() => {
     t--;
     circle.textContent = t;
+    playTick(t <= 3); // urgent tick in last 3 seconds
     if (t <= 3) { circle.classList.add("hot"); ring.classList.add("pulse"); }
-    if (t <= 0) { clearInterval(timerInterval); window.showResults(); }
+    if (t <= 0) { clearInterval(timerInterval); playBuzzer(); setTimeout(() => window.showResults(), 400); }
   }, 1000);
 };
 
@@ -408,6 +418,11 @@ window.showResults = function() {
   const s = SUPERLATIVES[currentIdx];
   showScreen("s-results");
   set(ref(db,"gameState"), {phase:"results", questionIdx:currentIdx});
+
+  // Sound sequence: suspense → fanfare or wah-wah → crowd cheer
+  playSuspense();
+  setTimeout(() => { isTie ? playWahWah() : playFanfare(); }, 1100);
+  setTimeout(() => playCrowdCheer(), 1600);
   document.getElementById("r-icon").textContent = s.icon;
   document.getElementById("r-label").textContent = s.label;
   document.getElementById("r-bg-graphic").textContent = s.bg;
@@ -501,6 +516,8 @@ window.nextAward = function() {
     set(ref(db,"gameState"), {phase:"leaderboard", questionIdx:currentIdx});
     renderLeaderboard();
     spawnConfetti("confetti-container2");
+    setTimeout(() => playVictory(), 300);    // victory fanfare first
+    setTimeout(() => playApplause(), 1600);  // then applause as podium settles
   }
 };
 
@@ -592,6 +609,174 @@ function renderLeaderboard() {
     el.innerHTML = avatarImgHTML(name);
     crowdEl.appendChild(el);
   });
+}
+
+// ─── Audio Engine ─────────────────────────────────────────────────────────────
+// All sounds generated via Web Audio API — no external files needed
+let audioCtx = null;
+let lobbyLoopNodes = [];
+
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+// Helper — simple oscillator note
+function playNote(freq, type, startT, dur, gainVal, endGain) {
+  const ac = getAudioCtx();
+  const o = ac.createOscillator(), g = ac.createGain();
+  o.type = type; o.frequency.value = freq;
+  g.gain.setValueAtTime(gainVal, ac.currentTime + startT);
+  if (endGain !== undefined)
+    g.gain.linearRampToValueAtTime(endGain, ac.currentTime + startT + dur);
+  o.connect(g); g.connect(ac.destination);
+  o.start(ac.currentTime + startT);
+  o.stop(ac.currentTime + startT + dur + 0.01);
+}
+
+// Helper — noise burst (snare / hat / tick)
+function playNoise(startT, dur, gainVal, filterFreq) {
+  const ac = getAudioCtx();
+  const buf = ac.createBuffer(1, Math.ceil(ac.sampleRate * dur), ac.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const src = ac.createBufferSource(); src.buffer = buf;
+  const f = ac.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = filterFreq || 1200;
+  const g = ac.createGain();
+  g.gain.setValueAtTime(gainVal, ac.currentTime + startT);
+  g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + startT + dur);
+  src.connect(f); f.connect(g); g.connect(ac.destination);
+  src.start(ac.currentTime + startT);
+  src.stop(ac.currentTime + startT + dur + 0.01);
+}
+
+// ── LOBBY: Upbeat funk groove — loops until game starts ──────────────────────
+function startLobbyMusic() {
+  stopLobbyMusic();
+  const ac = getAudioCtx();
+  const sr = ac.sampleRate, loopLen = 1.6;
+  const buf = ac.createBuffer(1, Math.floor(sr * loopLen), sr);
+  const d = buf.getChannelData(0);
+  [[0,80],[0.4,80],[0.8,100],[1.0,80],[1.4,90]].forEach(([t,f]) => {
+    const s=Math.floor(t*sr), l=Math.floor(0.14*sr);
+    for(let i=0;i<l;i++) d[s+i]=(d[s+i]||0)+Math.sin(2*Math.PI*f*i/sr)*Math.exp(-i/(sr*0.1))*0.55;
+  });
+  [[0.2,[392,494,587]],[0.6,[392,494,587]],[1.0,[349,440,523]],[1.2,[349,440,523]]].forEach(([t,freqs]) => {
+    freqs.forEach(f => {
+      const s=Math.floor(t*sr), l=Math.floor(0.09*sr);
+      for(let i=0;i<l;i++) d[s+i]=(d[s+i]||0)+Math.sin(2*Math.PI*f*i/sr)*Math.exp(-i/(sr*0.06))*0.14;
+    });
+  });
+  [0,0.2,0.4,0.6,0.8,1.0,1.2,1.4].forEach(t => {
+    const s=Math.floor(t*sr), l=Math.floor(0.04*sr);
+    for(let i=0;i<l;i++) d[s+i]=(d[s+i]||0)+(Math.random()*2-1)*Math.exp(-i/(sr*0.015))*0.12;
+  });
+  const src = ac.createBufferSource(); src.buffer = buf; src.loop = true;
+  const g = ac.createGain(); g.gain.value = 0.7;
+  src.connect(g); g.connect(ac.destination); src.start();
+  lobbyLoopNodes = [src];
+}
+
+function stopLobbyMusic() {
+  lobbyLoopNodes.forEach(n => { try { n.stop(); } catch(e){} });
+  lobbyLoopNodes = [];
+}
+
+// ── QUESTION: drum roll as award appears ─────────────────────────────────────
+function playDrumRoll() {
+  let t = 0;
+  for (let i = 0; i < 22; i++) {
+    const interval = Math.max(0.09 - i * 0.004, 0.025);
+    playNoise(t, 0.055, 0.45, 1200);
+    playNote(60, 'sine', t, 0.05, 0.3, 0);
+    t += interval;
+  }
+}
+
+// ── QUESTION: tick each second (urgent in last 3s) ───────────────────────────
+function playTick(isUrgent) {
+  playNoise(0, 0.04, isUrgent ? 0.7 : 0.45, isUrgent ? 1600 : 1200);
+  playNote(isUrgent ? 1400 : 1100, 'square', 0, 0.03, isUrgent ? 0.18 : 0.10, 0);
+}
+
+// ── QUESTION: buzzer when time's up ──────────────────────────────────────────
+function playBuzzer() {
+  playNote(220, 'sawtooth', 0, 0.55, 0.35, 0.01);
+  playNote(180, 'square',   0, 0.55, 0.15, 0.01);
+}
+
+// ── RESULTS: suspense build before reveal ────────────────────────────────────
+function playSuspense() {
+  [220,220,220,196,196,174,164].forEach((f,i) => {
+    playNote(f, 'sine', i*0.14, 0.18, 0.22, 0.01);
+  });
+}
+
+// ── RESULTS: winner fanfare ───────────────────────────────────────────────────
+function playFanfare() {
+  [{f:523,s:0,d:0.14},{f:659,s:0.14,d:0.14},{f:784,s:0.28,d:0.14},
+   {f:1047,s:0.42,d:0.5},{f:784,s:0.46,d:0.14},{f:880,s:0.60,d:0.14},
+   {f:1047,s:0.74,d:0.6}].forEach(n => {
+    playNote(n.f,   'triangle', n.s, n.d, 0.32, 0.01);
+    playNote(n.f*2, 'sine',     n.s, n.d, 0.07, 0.01);
+  });
+}
+
+// ── RESULTS: wah-wah trombone for ties ───────────────────────────────────────
+function playWahWah() {
+  [494,440,392,349].forEach((f,i) => {
+    playNote(f,     'sawtooth', i*0.3, 0.32, 0.28, 0.01);
+    playNote(f*1.5, 'sine',     i*0.3, 0.32, 0.06, 0.01);
+  });
+}
+
+// ── RESULTS: crowd cheer with confetti burst ─────────────────────────────────
+function playCrowdCheer() {
+  const ac = getAudioCtx();
+  for (let i = 0; i < 8; i++) {
+    const buf = ac.createBuffer(1, ac.sampleRate*1.2, ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for(let j=0;j<d.length;j++) d[j]=(Math.random()*2-1)*Math.sin(j/ac.sampleRate*7);
+    const src = ac.createBufferSource(); src.buffer = buf;
+    const fl = ac.createBiquadFilter(); fl.type='bandpass'; fl.frequency.value=700+i*180; fl.Q.value=0.5;
+    const g = ac.createGain();
+    g.gain.setValueAtTime(0.05, ac.currentTime);
+    g.gain.linearRampToValueAtTime(0.1, ac.currentTime+0.25);
+    g.gain.linearRampToValueAtTime(0, ac.currentTime+1.2);
+    src.connect(fl); fl.connect(g); g.connect(ac.destination);
+    src.start(); src.stop(ac.currentTime+1.3);
+  }
+}
+
+// ── LEADERBOARD: victory music ───────────────────────────────────────────────
+function playVictory() {
+  [{f:523,s:0,d:0.12},{f:659,s:0.12,d:0.12},{f:784,s:0.24,d:0.12},
+   {f:1047,s:0.36,d:0.12},{f:784,s:0.48,d:0.08},{f:880,s:0.56,d:0.08},
+   {f:988,s:0.64,d:0.08},{f:1047,s:0.72,d:0.5},
+   {f:784,s:0.76,d:0.12},{f:659,s:0.88,d:0.12},{f:784,s:1.0,d:0.5}
+  ].forEach(n => {
+    playNote(n.f,     'triangle', n.s, n.d, 0.28, 0.01);
+    playNote(n.f*0.5, 'sine',     n.s, n.d, 0.10, 0.01);
+  });
+}
+
+// ── LEADERBOARD: applause ─────────────────────────────────────────────────────
+function playApplause() {
+  const ac = getAudioCtx();
+  for (let i = 0; i < 14; i++) {
+    const buf = ac.createBuffer(1, Math.ceil(ac.sampleRate*0.09), ac.sampleRate);
+    const d = buf.getChannelData(0);
+    for(let j=0;j<d.length;j++) d[j]=Math.random()*2-1;
+    const src = ac.createBufferSource(); src.buffer = buf;
+    const f = ac.createBiquadFilter(); f.type='highpass'; f.frequency.value=900;
+    const g = ac.createGain();
+    const t = i*0.1 + Math.random()*0.04;
+    g.gain.setValueAtTime(0.13, ac.currentTime+t);
+    g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime+t+0.12);
+    src.connect(f); f.connect(g); g.connect(ac.destination);
+    src.start(ac.currentTime+t); src.stop(ac.currentTime+t+0.15);
+  }
 }
 
 // ─── Reset ────────────────────────────────────────────────────────────────────
