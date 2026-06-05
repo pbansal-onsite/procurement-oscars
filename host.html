@@ -280,10 +280,14 @@ function renderLeaderboard() {
   const medals = ["🥇","🥈","🥉"];
   const cont = document.getElementById("lb-rows");
   cont.innerHTML = "";
-  sorted.forEach(([name,cnt],i) => {
+let rank = 0;
+sorted.forEach(([name,cnt],i) => {
+    if (i===0 || cnt < sorted[i-1][1]) rank = i;
+    const medal = rank===0?"🥇":rank===1?"🥈":rank===2?"🥉":"";
+    const isTop = rank===0;
     const row = document.createElement("div");
-    row.className = `lb-row${i===0?" top1":""}`;
-    row.innerHTML = `<span class="lb-medal">${medals[i]||""}</span><span class="lb-name">${name}</span><span class="lb-awards">${cnt} award${cnt!==1?"s":""}</span>`;
+    row.className = `lb-row${isTop?" top1":""}`;
+    row.innerHTML = `<span class="lb-medal">${medal}</span><span class="lb-name">${name}</span><span class="lb-awards">${cnt} award${cnt!==1?"s":""}</span>`;
     cont.appendChild(row);
   });
 }
