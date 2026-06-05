@@ -12,37 +12,63 @@ body{font-family:system-ui,sans-serif;background:#0a0a0f;color:#fff;min-height:1
 .screen{display:none;min-height:100vh;flex-direction:column;align-items:center;justify-content:center;padding:40px;position:relative;overflow:hidden;}
 .screen.active{display:flex;}
 
+/* ===== SCREEN-SPECIFIC BACKGROUNDS ===== */
+/* Lobby: deep radial bloom from bottom-left — feels like a spotlight opening */
+#s-lobby{background:radial-gradient(ellipse 80% 60% at 20% 110%,#2a0a1e 0%,#0a0a0f 60%);}
+/* Question: cool dark blue-black — keeps focus on the award text */
+#s-question{background:radial-gradient(ellipse 70% 50% at 50% 120%,#0d0d2a 0%,#0a0a0f 60%);}
+/* Results: warm pink bloom from center — dramatic reveal energy */
+#s-results{background:radial-gradient(ellipse 80% 60% at 50% 80%,#2a0a1a 0%,#0a0a0f 55%);}
+/* Leaderboard: rich deep purple — feels like closing ceremony */
+#s-leaderboard{background:radial-gradient(ellipse 100% 70% at 50% 100%,#1a0828 0%,#0a0a0f 60%);}
+
+/* ===== LYFT BRAND GRID — subtle repeating pattern overlay ===== */
+/* A faint dot grid gives the dark bg depth without being distracting */
+.screen::before{
+  content:"";position:absolute;top:0;left:0;width:100%;height:100%;
+  background-image:radial-gradient(circle,rgba(255,0,191,0.06) 1px,transparent 1px);
+  background-size:32px 32px;pointer-events:none;z-index:0;
+}
+
+/* ===== LYFT CORNER WORDMARK — bottom-right watermark ===== */
+.screen::after{
+  content:"LYFT";position:absolute;bottom:24px;right:32px;
+  font-size:11px;font-weight:700;letter-spacing:4px;
+  color:rgba(255,0,191,0.15);pointer-events:none;z-index:0;
+}
+
 /* ===== LOGO (top-left on all screens) ===== */
 .logo{position:absolute;top:24px;left:32px;display:flex;align-items:center;gap:10px;z-index:10;}
-.logo-lyft{color:#FF00BF;font-weight:700;font-size:22px;}
-.logo-sep{color:#444;font-size:22px;}
-.logo-title{color:#888;font-size:16px;}
+.logo-lyft{color:#FF00BF;font-weight:700;font-size:22px;letter-spacing:1px;text-shadow:0 0 20px rgba(255,0,191,0.4);}
+.logo-sep{color:#333;font-size:22px;}
+.logo-title{color:#666;font-size:16px;letter-spacing:.5px;}
 
 /* ===== PLAYER COUNTER BADGE (top-right) ===== */
-.counter-badge{position:absolute;top:24px;right:32px;background:#111;border:1px solid #222;border-radius:10px;padding:8px 16px;font-size:14px;color:#888;z-index:10;}
+.counter-badge{position:absolute;top:24px;right:32px;background:rgba(255,0,191,0.08);border:1px solid rgba(255,0,191,0.25);border-radius:10px;padding:8px 16px;font-size:14px;color:#888;z-index:10;backdrop-filter:blur(4px);}
 .counter-badge span{color:#FF00BF;font-weight:700;font-size:18px;margin-left:6px;}
 
 /* ===== TYPOGRAPHY ===== */
-h1{font-size:52px;font-weight:700;letter-spacing:-1px;margin-bottom:12px;}
+h1{font-size:52px;font-weight:700;letter-spacing:-1px;margin-bottom:12px;text-shadow:0 0 40px rgba(255,0,191,0.3);}
 h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 .sub{color:#888;font-size:20px;margin-bottom:40px;}
 
 /* ===== BUTTONS ===== */
-.btn{background:#FF00BF;color:#fff;border:none;border-radius:14px;padding:16px 48px;font-size:18px;font-weight:700;cursor:pointer;transition:opacity .15s;}
-.btn:hover{opacity:.85;}
-.btn-ghost{background:transparent;border:1px solid #333;color:#666;border-radius:10px;padding:8px 20px;font-size:13px;cursor:pointer;margin-top:16px;}
+.btn{background:linear-gradient(135deg,#FF00BF,#cc0099);color:#fff;border:none;border-radius:14px;padding:16px 48px;font-size:18px;font-weight:700;cursor:pointer;transition:opacity .15s,transform .15s;box-shadow:0 4px 24px rgba(255,0,191,0.35);}
+.btn:hover{opacity:.9;transform:translateY(-1px);}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.12);color:#666;border-radius:10px;padding:8px 20px;font-size:13px;cursor:pointer;margin-top:16px;}
+.btn-ghost:hover{background:rgba(255,255,255,0.05);}
 
 /* ===== LOBBY — QR code wrapper ===== */
-.qr-wrap{background:#fff;border-radius:20px;padding:20px;display:inline-block;margin-bottom:28px;}
+.qr-wrap{background:#fff;border-radius:20px;padding:20px;display:inline-block;margin-bottom:28px;box-shadow:0 0 40px rgba(255,0,191,0.2);}
 
 /* ===== VOTING SCREEN — award label & timer ===== */
-.award-num{color:#555;font-size:14px;margin-bottom:24px;}
-.award-icon{font-size:56px;margin-bottom:16px;}
+.award-num{color:#555;font-size:14px;margin-bottom:24px;letter-spacing:1px;text-transform:uppercase;}
+.award-icon{font-size:56px;margin-bottom:16px;filter:drop-shadow(0 0 16px rgba(255,0,191,0.4));}
 .timer-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;margin:32px 0 12px;}
 .timer-ring{position:absolute;width:110px;height:110px;border-radius:50%;border:3px solid #FF00BF;opacity:0;transition:opacity .3s;}
 .timer-ring.pulse{animation:pulseRing 1s ease-out infinite;}
-.timer-circle{width:110px;height:110px;border-radius:50%;background:#1a1a2e;border:4px solid #333;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:700;transition:background .3s,border-color .3s;}
-.timer-circle.hot{background:#FF00BF;border-color:#FF00BF;}
+.timer-circle{width:110px;height:110px;border-radius:50%;background:rgba(255,0,191,0.06);border:3px solid rgba(255,0,191,0.3);display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:700;transition:background .3s,border-color .3s;}
+.timer-circle.hot{background:#FF00BF;border-color:#FF00BF;box-shadow:0 0 40px rgba(255,0,191,0.6);}
 .votes-live{color:#555;font-size:15px;}
 .votes-live span{color:#FF00BF;font-weight:700;}
 
@@ -52,27 +78,27 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 .bar-label .name{color:#ccc;}
 .bar-label .name.winner{color:#FF00BF;font-weight:700;}
 .bar-label .cnt{color:#555;}
-.bar-bg{height:12px;background:#1a1a1a;border-radius:6px;}
+.bar-bg{height:12px;background:rgba(255,255,255,0.05);border-radius:6px;}
 .bar-fill{height:12px;border-radius:6px;width:0;transition:width .8s ease;}
-.bar-fill.winner{background:#FF00BF;}
-.bar-fill.other{background:#333;}
+.bar-fill.winner{background:linear-gradient(90deg,#FF00BF,#ff66d9);}
+.bar-fill.other{background:rgba(255,255,255,0.12);}
 
 /* ===== RESULTS — winner announcement ===== */
 .winner-announce{margin:16px 0 20px;}
-.winner-announce .eyebrow{color:#888;font-size:18px;margin-bottom:6px;}
-.winner-announce .name{font-size:44px;font-weight:700;color:#FF00BF;}
-.winner-announce .tally{color:#666;font-size:16px;margin-top:4px;}
+.winner-announce .eyebrow{color:#666;font-size:18px;margin-bottom:6px;letter-spacing:.5px;}
+.winner-announce .name{font-size:44px;font-weight:700;color:#FF00BF;text-shadow:0 0 30px rgba(255,0,191,0.5);}
+.winner-announce .tally{color:#555;font-size:16px;margin-top:4px;}
 
 /* ===== RESULTS — winner bobblehead row ===== */
 .winner-bobbles{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin:16px 0 20px;}
 .winner-bobble-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;animation:bobbleIn .5s cubic-bezier(.34,1.56,.64,1) forwards;}
-.winner-bobble-head{width:80px;height:80px;border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 1.8s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 24px rgba(255,0,191,0.5);}
+.winner-bobble-head{width:80px;height:80px;border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 1.8s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 32px rgba(255,0,191,0.6),0 0 8px rgba(255,0,191,0.3);}
 .winner-bobble-head img{width:100%;height:100%;object-fit:cover;object-position:top center;}
 .winner-bobble-name{font-size:11px;color:#888;text-align:center;max-width:80px;}
 
 /* ===== LEADERBOARD — award list rows ===== */
-.lb-row{display:flex;align-items:center;gap:16px;background:#111;border:1px solid #222;border-radius:14px;padding:10px 16px;margin-bottom:8px;width:100%;}
-.lb-row.top1{border-color:#FF00BF;background:#1a0a14;}
+.lb-row{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:10px 16px;margin-bottom:8px;width:100%;}
+.lb-row.top1{border-color:rgba(255,0,191,0.4);background:rgba(255,0,191,0.06);}
 .lb-medal{font-size:20px;min-width:28px;}
 .lb-name{flex:1;font-size:15px;}
 .lb-row.top1 .lb-name{color:#FF00BF;font-weight:700;}
@@ -80,35 +106,48 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 
 /* ===== PODIUM — 3-column podium graphic ===== */
 .podium-col{display:flex;flex-direction:column;align-items:center;gap:8px;}
-.podium-avatar{border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 2s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 20px rgba(255,0,191,0.4);}
+.podium-avatar{border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 2s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 24px rgba(255,0,191,0.5);}
 .podium-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;}
-.podium-avatar.p2{border-color:#aaa;box-shadow:0 0 12px rgba(170,170,170,0.3);}
-.podium-avatar.p3{border-color:#cd7f32;box-shadow:0 0 12px rgba(205,127,50,0.3);}
+.podium-avatar.p2{border-color:#aaa;box-shadow:0 0 16px rgba(170,170,170,0.4);}
+.podium-avatar.p3{border-color:#cd7f32;box-shadow:0 0 16px rgba(205,127,50,0.4);}
 .podium-name{font-size:12px;color:#aaa;text-align:center;max-width:90px;line-height:1.2;}
 .podium-name.p1{color:#FF00BF;font-weight:700;font-size:14px;}
 .podium-block{display:flex;align-items:center;justify-content:center;border-radius:10px 10px 0 0;font-size:20px;font-weight:700;}
-.podium-block.p1{background:linear-gradient(180deg,#3a2040,#1a0a14);border:1px solid #FF00BF;width:110px;height:80px;color:#FF00BF;}
-.podium-block.p2{background:linear-gradient(180deg,#222,#111);border:1px solid #555;width:90px;height:56px;color:#aaa;}
-.podium-block.p3{background:linear-gradient(180deg,#1e1810,#111);border:1px solid #cd7f32;width:80px;height:40px;color:#cd7f32;}
+.podium-block.p1{background:linear-gradient(180deg,rgba(255,0,191,0.2),rgba(255,0,191,0.05));border:1px solid rgba(255,0,191,0.5);width:110px;height:80px;color:#FF00BF;}
+.podium-block.p2{background:linear-gradient(180deg,rgba(170,170,170,0.1),rgba(170,170,170,0.02));border:1px solid rgba(170,170,170,0.3);width:90px;height:56px;color:#aaa;}
+.podium-block.p3{background:linear-gradient(180deg,rgba(205,127,50,0.1),rgba(205,127,50,0.02));border:1px solid rgba(205,127,50,0.3);width:80px;height:40px;color:#cd7f32;}
 .podium-enter{animation:bobbleIn 0.6s cubic-bezier(.34,1.56,.64,1) forwards;opacity:0;}
 
 /* ===== CROWD — scattered small avatars bottom-right ===== */
-.crowd-avatar{position:absolute;border-radius:50%;overflow:hidden;border:2px solid #333;animation:bobbleWobble 2.5s ease-in-out infinite;}
+.crowd-avatar{position:absolute;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.15);animation:bobbleWobble 2.5s ease-in-out infinite;}
 .crowd-avatar img{width:100%;height:100%;object-fit:cover;object-position:top center;}
 
 /* ===== LOBBY BOBBLEHEADS — pop in as players join ===== */
 .bobble-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;animation:bobbleIn .5s cubic-bezier(.34,1.56,.64,1) forwards;}
-.bobble-head{width:72px;height:72px;border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 2.5s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 16px rgba(255,0,191,0.3);}
+.bobble-head{width:72px;height:72px;border-radius:50%;border:3px solid #FF00BF;overflow:hidden;animation:bobbleWobble 2.5s ease-in-out infinite;transform-origin:bottom center;box-shadow:0 0 20px rgba(255,0,191,0.35);position:relative;}
 .bobble-head img{width:100%;height:100%;object-fit:cover;object-position:top center;}
-.bobble-name{font-size:11px;color:#888;text-align:center;max-width:72px;line-height:1.2;}
+.bobble-name{font-size:11px;color:#666;text-align:center;max-width:72px;line-height:1.2;}
+
+/* ===== LYFT CAP — worn by all bobbleheads ===== */
+.lyft-cap{position:absolute;top:-18px;left:50%;transform:translateX(-50%);z-index:20;pointer-events:none;animation:capRock 2.5s ease-in-out infinite;}
+@keyframes capRock{0%,100%{transform:translateX(-50%) rotate(-4deg);}50%{transform:translateX(-50%) rotate(4deg);}}
+
+/* ===== LYFT CAR — drives across lobby screen bottom ===== */
+.lyft-car-wrap{position:absolute;bottom:52px;z-index:10;animation:carDrive 8s linear infinite;}
+.lyft-car-shadow{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:110px;height:10px;background:rgba(255,0,191,0.2);border-radius:50%;filter:blur(4px);}
+.road-wrap{position:absolute;bottom:0;left:0;width:100%;height:52px;background:#141414;z-index:3;}
+.road-stripe{position:absolute;top:50%;left:0;width:100%;height:3px;margin-top:-1.5px;background:repeating-linear-gradient(90deg,#FF00BF 0,#FF00BF 32px,transparent 32px,transparent 64px);animation:roadScroll 0.55s linear infinite;}
+.road-edge{position:absolute;top:0;left:0;width:100%;height:2px;background:rgba(255,0,191,0.3);}
+@keyframes carDrive{0%{left:-180px;}100%{left:calc(100% + 20px);}}
+@keyframes roadScroll{from{background-position:0 0;}to{background-position:-128px 0;}}
 
 /* ===== TIE DISPLAY ===== */
 .tie-mode{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;}
-.tie-name{color:#FF00BF;font-size:36px;font-weight:700;animation:pop .45s ease forwards;}
-.tie-vs{color:#444;font-size:20px;font-weight:400;margin:0 4px;}
+.tie-name{color:#FF00BF;font-size:36px;font-weight:700;animation:pop .45s ease forwards;text-shadow:0 0 20px rgba(255,0,191,0.5);}
+.tie-vs{color:#333;font-size:20px;font-weight:400;margin:0 4px;}
 
 /* ===== BACKGROUND GRAPHIC — large faded emoji behind each results screen ===== */
-.bg-graphic{position:absolute;font-size:280px;opacity:.04;pointer-events:none;user-select:none;z-index:0;top:50%;left:50%;transform:translate(-50%,-50%);animation:bgFloat 6s ease-in-out infinite;}
+.bg-graphic{position:absolute;font-size:280px;opacity:.03;pointer-events:none;user-select:none;z-index:0;top:50%;left:50%;transform:translate(-50%,-50%);animation:bgFloat 6s ease-in-out infinite;}
 
 /* ===== CONFETTI PIECES ===== */
 .confetti-piece{position:absolute;border-radius:2px;animation:confettiFall 2.5s ease-in forwards;}
@@ -142,10 +181,32 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
     <div class="qr-wrap"><img id="qr-img" src="" width="200" height="200" alt="QR code to join"></div>
     <p style="color:#333;font-size:13px;font-family:monospace;margin-bottom:16px;" id="vote-url"></p>
     <!-- Bobbleheads appear here as players scan in -->
-    <div id="bobble-grid" style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:24px;min-height:100px;"></div>
-    <button class="btn" onclick="startQuestion(0)">Start the Oscars</button>
+    <div id="bobble-grid" style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:16px;min-height:100px;position:relative;z-index:1;"></div>
+    <button class="btn" onclick="startQuestion(0)" style="position:relative;z-index:1;">Start the Oscars</button>
   </div>
-</div>
+  <!-- Lyft car drives across bottom of lobby -->
+  <div class="road-wrap">
+    <div class="road-edge"></div>
+    <div class="road-stripe"></div>
+  </div>
+  <div class="lyft-car-wrap">
+    <div class="lyft-car-shadow"></div>
+    <svg width="160" height="80" viewBox="0 0 160 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="12" y="34" width="136" height="36" rx="8" fill="#1a1a2e"/>
+      <path d="M38 34 L54 14 L106 14 L122 34" fill="#0f0f1e" stroke="#FF00BF" stroke-width="1.2"/>
+      <rect x="58" y="17" width="16" height="13" rx="2.5" fill="rgba(100,180,255,0.25)" stroke="rgba(100,180,255,0.4)" stroke-width="0.8"/>
+      <rect x="80" y="17" width="16" height="13" rx="2.5" fill="rgba(100,180,255,0.25)" stroke="rgba(100,180,255,0.4)" stroke-width="0.8"/>
+      <circle cx="44" cy="70" r="12" fill="#0a0a0f" stroke="#FF00BF" stroke-width="2.5"/>
+      <circle cx="44" cy="70" r="5" fill="#1a1a2e"/>
+      <circle cx="116" cy="70" r="12" fill="#0a0a0f" stroke="#FF00BF" stroke-width="2.5"/>
+      <circle cx="116" cy="70" r="5" fill="#1a1a2e"/>
+      <rect x="130" y="44" width="14" height="9" rx="3" fill="rgba(255,220,100,0.7)"/>
+      <rect x="16" y="44" width="8" height="9" rx="2" fill="#FF00BF" opacity="0.9"/>
+      <text x="80" y="52" font-family="system-ui,sans-serif" font-size="18" font-weight="900" fill="#FF00BF" text-anchor="middle" letter-spacing="-0.5" opacity="0.95">lyft</text>
+      <path d="M60 36 Q70 31 80 34 Q90 31 100 36" stroke="#FF00BF" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.5"/>
+      <rect x="20" y="68" width="120" height="4" rx="2" fill="rgba(255,0,191,0.12)"/>
+    </svg>
+  </div>
 
 <!-- ===================== QUESTION SCREEN =====================
      Shows the award category, animated countdown timer,
@@ -436,7 +497,7 @@ window.showResults = function() {
       wrap.style.animationDelay = `${i * 0.15}s`;
       const head = document.createElement("div");
       head.className = "winner-bobble-head";
-      head.style.animationDelay = `${i * 0.2}s`;
+      head.style.cssText = `animation-delay:${i*0.2}s;overflow:visible;`;
       head.innerHTML = makeAvatarHTML(name, 80);
       const label = document.createElement("div");
       label.className = "winner-bobble-name";
@@ -520,7 +581,7 @@ function renderLeaderboard() {
     col.style.animationDelay = `${[0.2,0,0.35][i]}s`;
     const avatarEl = document.createElement("div");
     avatarEl.className = `podium-avatar ${p.cls}`;
-    avatarEl.style.cssText = `width:${p.size}px;height:${p.size}px;animation-delay:${[0.4,0.1,0.6][i]}s;`;
+    avatarEl.style.cssText = `width:${p.size}px;height:${p.size}px;animation-delay:${[0.4,0.1,0.6][i]}s;overflow:visible;`;
     avatarEl.innerHTML = makeAvatarHTML(p.name, p.size);
     const nameEl = document.createElement("div");
     nameEl.className = `podium-name ${p.cls}`;
@@ -594,17 +655,31 @@ function showScreen(id) {
   document.getElementById(id).classList.add("active");
 }
 
+// Lyft cap SVG — placed on top of every bobblehead
+// size controls the width; the cap rocks left-right via CSS animation
+function lyftCapSVG(size) {
+  return `<svg class="lyft-cap" width="${size}" height="${Math.round(size*0.62)}" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="2" y="20" width="76" height="18" rx="6" fill="#FF00BF"/>
+    <rect x="14" y="4" width="46" height="20" rx="8" fill="#FF00BF"/>
+    <rect x="0" y="28" width="20" height="10" rx="4" fill="#cc0099"/>
+    <rect x="16" y="7" width="46" height="5" rx="2" fill="rgba(255,255,255,0.18)"/>
+    <text x="37" y="34" font-family="system-ui,sans-serif" font-size="11" font-weight="900" fill="white" text-anchor="middle" letter-spacing="-0.3">lyft</text>
+  </svg>`;
+}
+
 // Build avatar HTML — photo if available, initials fallback if not
-// size param kept for potential future use
+// Includes a Lyft cap floating above the head
 function makeAvatarHTML(name, size) {
   const file = AVATARS[name];
   const initials = name.split(' ').map(p=>p[0]).join('');
+  const capSize = Math.round(size * 0.65);
+  const cap = lyftCapSVG(capSize);
   if (file) {
-    return `<img src="${BASE}${file}" alt="${name}"
+    return `${cap}<img src="${BASE}${file}" alt="${name}"
       style="width:100%;height:100%;object-fit:cover;object-position:top center;"
-      onerror="this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a2e;color:#FF00BF;font-weight:700;font-size:20px;\\'>${initials}</div>'">`;
+      onerror="this.parentElement.innerHTML='${cap}<div style=\\'width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a2e;color:#FF00BF;font-weight:700;font-size:20px;\\'>${initials}</div>'">`;
   }
-  return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a2e;color:#FF00BF;font-weight:700;font-size:20px;">${initials}</div>`;
+  return `${cap}<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a2e;color:#FF00BF;font-weight:700;font-size:20px;">${initials}</div>`;
 }
 
 // Spawn confetti — random colors, sizes and delays
