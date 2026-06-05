@@ -426,6 +426,9 @@ window.showResults = function() {
   const topVotes = entries[0] ? entries[0][1] : 0;
   const tied = entries.filter(e => e[1] === topVotes);
   const isTie = tied.length > 1;
+  playSuspense();
+  setTimeout(() => { isTie ? playWahWah() : playFanfare(); }, 1100);
+  setTimeout(() => playCrowdCheer(), 1600);
 
   const tiePhrases = [
     {eyebrow:"Nobody wins. Everybody loses. 🤝", sub:"The committee is shook."},
