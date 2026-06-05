@@ -569,11 +569,14 @@ function renderLeaderboard() {
   // Layout: [2nd] [1st] [3rd] — classic Olympic podium order
   const podium = document.getElementById("lb-podium");
   podium.innerHTML = "";
-  const podiumData = [
-    sorted[1] ? {name:sorted[1][0], cnt:sorted[1][1], cls:"p2", size:72, medal:"🥈", blockH:56} : null,
-    sorted[0] ? {name:sorted[0][0], cnt:sorted[0][1], cls:"p1", size:96, medal:"🥇", blockH:80} : null,
-    sorted[2] ? {name:sorted[2][0], cnt:sorted[2][1], cls:"p3", size:60, medal:"🥉", blockH:40} : null,
-  ];
+  const topCnt = sorted[0]?.[1] ?? 0;
+  function getPodiumStyle(cnt) {
+    if (cnt === topCnt) return {cls:"p1", size:96, medal:"🥇"};
+    if (cnt === sorted[1]?.[1]) return {cls:"p2", size:72, medal:"🥈"};
+    return {cls:"p3", size:60, medal:"🥉"};
+  }
+  const slots = [sorted[1], sorted[0], sorted[2]];
+  const podiumData = slots.map(e => e ? {name:e[0], cnt:e[1], ...getPodiumStyle(e[1])} : null);
   podiumData.forEach((p, i) => {
     if (!p) { podium.innerHTML += `<div style="width:${[90,110,80][i]}px;"></div>`; return; }
     const col = document.createElement("div");
