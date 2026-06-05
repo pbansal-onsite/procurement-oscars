@@ -419,10 +419,6 @@ window.showResults = function() {
   showScreen("s-results");
   set(ref(db,"gameState"), {phase:"results", questionIdx:currentIdx});
 
-  // Sound sequence: suspense → fanfare or wah-wah → crowd cheer
-  playSuspense();
-  setTimeout(() => { isTie ? playWahWah() : playFanfare(); }, 1100);
-  setTimeout(() => playCrowdCheer(), 1600);
   document.getElementById("r-icon").textContent = s.icon;
   document.getElementById("r-label").textContent = s.label;
   document.getElementById("r-bg-graphic").textContent = s.bg;
