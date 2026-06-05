@@ -617,8 +617,7 @@ function renderLeaderboard() {
   // ── Crowd ──
   // Everyone who didn't make the podium gets scattered in the bottom-right corner
   // like a little fan section cheering on the winners
-  const podiumNames = new Set(slots.filter(Boolean).map(e => e[0]));
-  const crowd = Object.keys(AVATARS).filter(n => !podiumNames.has(n));
+const podiumNames = new Set(podiumData.filter(Boolean).map(p => p.name));  const crowd = Object.keys(AVATARS).filter(n => !podiumNames.has(n));
   const crowdEl = document.getElementById("lb-crowd");
   crowdEl.innerHTML = "";
   const positions = [
