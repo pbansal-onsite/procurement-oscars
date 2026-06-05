@@ -508,17 +508,10 @@ function renderLeaderboard() {
   // Layout: [2nd] [1st] [3rd] — classic Olympic podium order
   const podium = document.getElementById("lb-podium");
   podium.innerHTML = "";
-  // If 1st and 2nd are tied, both get gold — show them both as p1
-  const topCnt = sorted[0] ? sorted[0][1] : 0;
-  const secondCnt = sorted[1] ? sorted[1][1] : 0;
-  const thirdCnt = sorted[2] ? sorted[2][1] : 0;
-  const tiedForFirst = secondCnt === topCnt;
-  const tiedForSecond = !tiedForFirst && thirdCnt === secondCnt;
-
   const podiumData = [
-    sorted[1] ? {name:sorted[1][0], cnt:secondCnt, cls:tiedForFirst?"p1":"p2", size:tiedForFirst?96:72, medal:tiedForFirst?"🥇":"🥈", blockH:tiedForFirst?80:56} : null,
-    sorted[0] ? {name:sorted[0][0], cnt:topCnt,    cls:"p1", size:96, medal:"🥇", blockH:80} : null,
-    sorted[2] ? {name:sorted[2][0], cnt:thirdCnt,  cls:tiedForSecond?"p2":"p3", size:tiedForSecond?72:60, medal:tiedForSecond?"🥈":"🥉", blockH:tiedForSecond?56:40} : null,
+    sorted[1] ? {name:sorted[1][0], cnt:sorted[1][1], cls:"p2", size:72, medal:"🥈", blockH:56} : null,
+    sorted[0] ? {name:sorted[0][0], cnt:sorted[0][1], cls:"p1", size:96, medal:"🥇", blockH:80} : null,
+    sorted[2] ? {name:sorted[2][0], cnt:sorted[2][1], cls:"p3", size:60, medal:"🥉", blockH:40} : null,
   ];
   podiumData.forEach((p, i) => {
     if (!p) { podium.innerHTML += `<div style="width:${[90,110,80][i]}px;"></div>`; return; }
@@ -562,7 +555,7 @@ function renderLeaderboard() {
   // ── Crowd ──
   // Everyone who didn't make the podium gets scattered in the bottom-right corner
   // like a little fan section cheering on the winners
-  const podiumNames = new Set(podiumData.filter(Boolean).map(p => p.name));
+  const podiumNames = new Set(slots.filter(Boolean).map(e => e[0]));
   const crowd = Object.keys(AVATARS).filter(n => !podiumNames.has(n));
   const crowdEl = document.getElementById("lb-crowd");
   crowdEl.innerHTML = "";
