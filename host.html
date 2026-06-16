@@ -159,10 +159,8 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
   <div class="logo"><span class="logo-lyft">Lyft</span><span class="logo-sep">|</span><span class="logo-title">Procurement Oscars</span></div>
   <div class="counter-badge">Players joined <span id="voter-count">0</span></div>
 
-  <!-- Scattered bobbleheads fill the whole screen -->
   <div id="bobble-grid" style="position:absolute;top:0;left:0;width:100%;height:calc(100% - 52px);pointer-events:none;z-index:1;"></div>
 
-  <!-- Central content on top -->
   <div class="fade-up" style="text-align:center;max-width:700px;position:relative;z-index:2;">
     <div style="font-size:64px;margin-bottom:16px;">🏆</div>
     <h1>Procurement Oscars</h1>
@@ -172,7 +170,6 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
     <button class="btn" onclick="startQuestion(0)">Start the Oscars</button>
   </div>
 
-  <!-- Lyft car drives across bottom -->
   <div class="road-wrap">
     <div class="road-edge"></div>
     <div class="road-stripe"></div>
@@ -211,7 +208,7 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
     </div>
     <div class="votes-live">votes in: <span id="q-votes-in">0</span> / <span id="q-total-voters">0</span></div>
     <br>
-    <button class="btn-ghost" onclick="clearInterval(timerInterval);playBuzzer();setTimeout(()=>window.showResults(),400);">Skip timer</button>
+    <button class="btn-ghost" onclick="skipTimer()">Skip timer</button>
   </div>
 </div>
 
@@ -260,7 +257,6 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// ─── Firebase config ──────────────────────────────────────────────────────────
 const firebaseConfig = {
   apiKey: "AIzaSyCsLcoMxybDL7ZKy6ga_hUyg5g-GhIdulc",
   authDomain: "procurement-oscars.firebaseapp.com",
@@ -271,7 +267,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// ─── Award definitions ────────────────────────────────────────────────────────
 const SUPERLATIVES = [
   {icon:"🧾", label:"Most likely to negotiate a restaurant bill",           bg:"🍽️"},
   {icon:"🕵️", label:"Best poker face in a vendor meeting",                 bg:"🃏"},
@@ -285,7 +280,6 @@ const SUPERLATIVES = [
   {icon:"🗂️", label:"Most likely to remember a PO number from 3 years ago",bg:"📁"},
 ];
 
-// ─── Player avatars ───────────────────────────────────────────────────────────
 const AVATARS = {
   "Angel Lin":"angel.jpg","Ashley Wood":"ashley.jpg","Bradlee Dabu":"bradlee.png",
   "Daniel Pappas":"daniel.png","Dimitri Smith":"dimitri.png","Grace Nasr":"grace.jpg",
@@ -296,13 +290,13 @@ const AVATARS = {
 };
 const BASE = "https://pbansal-onsite.github.io/procurement-oscars/";
 
-// ─── Game state ───────────────────────────────────────────────────────────────
-let timerInterval = null;
 let currentIdx = 0;
 let allVotes = {};
 let voterCount = 0;
 
-// ─── Lobby setup ─────────────────────────────────────────────────────────────
+// ─── FIX: expose timerInterval and playBuzzer on window so inline onclick can reach them ───
+window.timerInterval = null;
+
 const voteUrl = "https://pbansal-onsite.github.io/procurement-oscars/vote.html";
 document.getElementById("vote-url").textContent = voteUrl;
 document.getElementById("qr-img").src =
@@ -313,23 +307,17 @@ remove(ref(db,"voters"));
 remove(ref(db,"voterNames"));
 remove(ref(db,"votes"));
 
-// Start lobby music — Web Audio requires a user gesture first,
-// so we attach it to the first click/touch on the page
 document.addEventListener('click', function startMusic() {
   startLobbyMusic();
   document.removeEventListener('click', startMusic);
 }, {once: true});
 
-// ─── Live voter count ─────────────────────────────────────────────────────────
 onValue(ref(db,"voters"), snap => {
   voterCount = snap.exists() ? Object.keys(snap.val()).length : 0;
   document.getElementById("voter-count").textContent = voterCount;
   document.getElementById("q-total-voters").textContent = voterCount;
 });
 
-// ─── Lobby bobbleheads — scattered randomly across screen ────────────────────
-// Predefined positions (% from top-left) spread across the screen
-// avoiding the central content area
 const SCATTER_POS = [
   {x:4,  y:10},{x:88, y:8 },{x:3,  y:55},{x:90, y:52},{x:6,  y:82},
   {x:85, y:78},{x:20, y:6 },{x:72, y:5 },{x:15, y:78},{x:78, y:80},
@@ -347,22 +335,17 @@ onValue(ref(db,"voterNames"), snap => {
     const wrap = document.createElement("div");
     wrap.className = "bobble-wrap";
     wrap.style.cssText = `left:${pos.x}%;top:${pos.y}%;animation-delay:${i*0.08}s;`;
-
-    // Cap sits above the circle as a sibling (not inside overflow:hidden head)
     const capEl = document.createElement("div");
     capEl.className = "cap-above";
     capEl.style.animationDelay = `${(i*0.2)%2}s`;
     capEl.innerHTML = lyftCapSVG(Math.round(72*0.65));
-
     const head = document.createElement("div");
     head.className = "bobble-head";
     head.style.animationDelay = `${(i*0.3)%2}s`;
     head.innerHTML = avatarImgHTML(name);
-
     const label = document.createElement("div");
     label.className = "bobble-name";
     label.textContent = name.split(' ')[0];
-
     wrap.appendChild(capEl);
     wrap.appendChild(head);
     wrap.appendChild(label);
@@ -370,7 +353,6 @@ onValue(ref(db,"voterNames"), snap => {
   });
 });
 
-// ─── Live vote tracking ───────────────────────────────────────────────────────
 onValue(ref(db,"votes"), snap => {
   allVotes = snap.exists() ? snap.val() : {};
   if (document.getElementById("s-question").classList.contains("active")) {
@@ -381,11 +363,10 @@ onValue(ref(db,"votes"), snap => {
   }
 });
 
-// ─── Start a question ────────────────────────────────────────────────────────
 window.startQuestion = function(idx) {
-  stopLobbyMusic(); // stop lobby groove when game starts
+  stopLobbyMusic();
   currentIdx = idx;
-  clearInterval(timerInterval);
+  clearInterval(window.timerInterval);
   const s = SUPERLATIVES[idx];
   showScreen("s-question");
   document.getElementById("q-num").textContent = `Award ${idx+1} of ${SUPERLATIVES.length}`;
@@ -393,25 +374,31 @@ window.startQuestion = function(idx) {
   document.getElementById("q-label").textContent = s.label;
   document.getElementById("q-votes-in").textContent = "0";
   set(ref(db,"gameState"), {phase:"question", questionIdx:idx});
-  playDrumRoll(); // drum roll as question appears
+  playDrumRoll();
   let t = 10;
   const circle = document.getElementById("timer-circle");
   const ring = document.getElementById("timer-ring");
   circle.textContent = t;
   circle.classList.remove("hot");
   ring.classList.remove("pulse");
-  timerInterval = setInterval(() => {
+  window.timerInterval = setInterval(() => {
     t--;
     circle.textContent = t;
-    playTick(t <= 3); // urgent tick in last 3 seconds
+    playTick(t <= 3);
     if (t <= 3) { circle.classList.add("hot"); ring.classList.add("pulse"); }
-    if (t <= 0) { clearInterval(timerInterval); playBuzzer(); setTimeout(() => window.showResults(), 400); }
+    if (t <= 0) { clearInterval(window.timerInterval); playBuzzer(); setTimeout(() => window.showResults(), 400); }
   }, 1000);
 };
 
-// ─── Show results ─────────────────────────────────────────────────────────────
+// ─── FIX: expose skipTimer on window so the inline onclick can call it ───────
+window.skipTimer = function() {
+  clearInterval(window.timerInterval);
+  playBuzzer();
+  setTimeout(() => window.showResults(), 400);
+};
+
 window.showResults = function() {
-  clearInterval(timerInterval);
+  clearInterval(window.timerInterval);
   const v = allVotes[currentIdx] || {};
   const entries = Object.entries(v).sort((a,b) => b[1]-a[1]);
   const total = entries.reduce((s,e) => s+e[1], 0);
@@ -427,8 +414,6 @@ window.showResults = function() {
   const tied = entries.filter(e => e[1] === topVotes);
   const isTie = tied.length > 1;
 
-  // Sound sequence: suspense → fanfare or wah-wah → crowd cheer
-  // isTie must be defined before these lines
   playSuspense();
   setTimeout(() => { isTie ? playWahWah() : playFanfare(); }, 1100);
   setTimeout(() => playCrowdCheer(), 1600);
@@ -459,7 +444,6 @@ window.showResults = function() {
       `${topVotes} of ${total} vote${total!==1?"s":""}`;
   }
 
-  // Winner bobbleheads with cap
   const bobblesEl = document.getElementById("winner-bobbles");
   bobblesEl.innerHTML = "";
   const winners = isTie ? tied : [entries[0]];
@@ -509,7 +493,6 @@ window.showResults = function() {
     currentIdx < SUPERLATIVES.length-1 ? "Next award →" : "See leaderboard 🏆";
 };
 
-// ─── Next award / leaderboard ─────────────────────────────────────────────────
 window.nextAward = function() {
   if (currentIdx < SUPERLATIVES.length-1) {
     window.startQuestion(currentIdx+1);
@@ -518,12 +501,11 @@ window.nextAward = function() {
     set(ref(db,"gameState"), {phase:"leaderboard", questionIdx:currentIdx});
     renderLeaderboard();
     spawnConfetti("confetti-container2");
-    setTimeout(() => playVictory(), 300);    // victory fanfare first
-    setTimeout(() => playApplause(), 1600);  // then applause as podium settles
+    setTimeout(() => playVictory(), 300);
+    setTimeout(() => playApplause(), 1600);
   }
 };
 
-// ─── Leaderboard ──────────────────────────────────────────────────────────────
 function renderLeaderboard() {
   const tally = {};
   SUPERLATIVES.forEach((_,i) => {
@@ -533,7 +515,6 @@ function renderLeaderboard() {
   });
   const sorted = Object.entries(tally).sort((a,b) => b[1]-a[1]);
 
-  // Podium — ties get same rank/style
   const podium = document.getElementById("lb-podium");
   podium.innerHTML = "";
   const topCnt = sorted[0]?.[1] ?? 0;
@@ -552,8 +533,6 @@ function renderLeaderboard() {
     const col = document.createElement("div");
     col.className = "podium-col podium-enter";
     col.style.animationDelay = `${podiumDelays[i]}s`;
-
-    // Avatar with cap above
     const colWrap = document.createElement("div");
     colWrap.className = "podium-col-wrap";
     const capEl = document.createElement("div");
@@ -566,7 +545,6 @@ function renderLeaderboard() {
     avatarEl.innerHTML = avatarImgHTML(p.name);
     colWrap.appendChild(capEl);
     colWrap.appendChild(avatarEl);
-
     const nameEl = document.createElement("div");
     nameEl.className = `podium-name ${p.cls}`;
     nameEl.textContent = p.name.split(' ')[0];
@@ -579,7 +557,6 @@ function renderLeaderboard() {
     podium.appendChild(col);
   });
 
-  // Award list
   const cont = document.getElementById("lb-rows");
   cont.innerHTML = "";
   let rank = 0;
@@ -592,7 +569,6 @@ function renderLeaderboard() {
     cont.appendChild(row);
   });
 
-  // Crowd — everyone not on podium, scattered bottom-right
   const podiumNames = new Set(podiumData.filter(Boolean).map(p => p.name));
   const crowd = Object.keys(AVATARS).filter(n => !podiumNames.has(n));
   const crowdEl = document.getElementById("lb-crowd");
@@ -614,7 +590,6 @@ function renderLeaderboard() {
 }
 
 // ─── Audio Engine ─────────────────────────────────────────────────────────────
-// All sounds generated via Web Audio API — no external files needed
 let audioCtx = null;
 let lobbyLoopNodes = [];
 
@@ -624,7 +599,6 @@ function getAudioCtx() {
   return audioCtx;
 }
 
-// Helper — simple oscillator note
 function playNote(freq, type, startT, dur, gainVal, endGain) {
   const ac = getAudioCtx();
   const o = ac.createOscillator(), g = ac.createGain();
@@ -637,7 +611,6 @@ function playNote(freq, type, startT, dur, gainVal, endGain) {
   o.stop(ac.currentTime + startT + dur + 0.01);
 }
 
-// Helper — noise burst (snare / hat / tick)
 function playNoise(startT, dur, gainVal, filterFreq) {
   const ac = getAudioCtx();
   const buf = ac.createBuffer(1, Math.ceil(ac.sampleRate * dur), ac.sampleRate);
@@ -653,7 +626,6 @@ function playNoise(startT, dur, gainVal, filterFreq) {
   src.stop(ac.currentTime + startT + dur + 0.01);
 }
 
-// ── LOBBY: Upbeat funk groove — loops until game starts ──────────────────────
 function startLobbyMusic() {
   stopLobbyMusic();
   const ac = getAudioCtx();
@@ -685,7 +657,6 @@ function stopLobbyMusic() {
   lobbyLoopNodes = [];
 }
 
-// ── QUESTION: drum roll as award appears ─────────────────────────────────────
 function playDrumRoll() {
   let t = 0;
   for (let i = 0; i < 22; i++) {
@@ -696,26 +667,22 @@ function playDrumRoll() {
   }
 }
 
-// ── QUESTION: sonar ping each second (urgent = higher pitch) ─────────────────
 function playTick(isUrgent) {
   playNote(isUrgent ? 880 : 440, 'sine', 0, 0.4, 0.2,  0.001);
   playNote(isUrgent ? 1320 : 660, 'sine', 0, 0.3, 0.07, 0.001);
 }
 
-// ── QUESTION: buzzer when time's up ──────────────────────────────────────────
 function playBuzzer() {
   playNote(220, 'sawtooth', 0, 0.55, 0.35, 0.01);
   playNote(180, 'square',   0, 0.55, 0.15, 0.01);
 }
 
-// ── RESULTS: suspense build before reveal ────────────────────────────────────
 function playSuspense() {
   [220,220,220,196,196,174,164].forEach((f,i) => {
     playNote(f, 'sine', i*0.14, 0.18, 0.22, 0.01);
   });
 }
 
-// ── RESULTS: winner fanfare ───────────────────────────────────────────────────
 function playFanfare() {
   [{f:523,s:0,d:0.14},{f:659,s:0.14,d:0.14},{f:784,s:0.28,d:0.14},
    {f:1047,s:0.42,d:0.5},{f:784,s:0.46,d:0.14},{f:880,s:0.60,d:0.14},
@@ -725,7 +692,6 @@ function playFanfare() {
   });
 }
 
-// ── RESULTS: wah-wah trombone for ties ───────────────────────────────────────
 function playWahWah() {
   [494,440,392,349].forEach((f,i) => {
     playNote(f,     'sawtooth', i*0.3, 0.32, 0.28, 0.01);
@@ -733,7 +699,6 @@ function playWahWah() {
   });
 }
 
-// ── RESULTS: crowd cheer with confetti burst ─────────────────────────────────
 function playCrowdCheer() {
   const ac = getAudioCtx();
   for (let i = 0; i < 8; i++) {
@@ -751,7 +716,6 @@ function playCrowdCheer() {
   }
 }
 
-// ── LEADERBOARD: Royal processional — majestic march ─────────────────────────
 function playVictory() {
   [[392,0,0.25],[392,0.25,0.12],[440,0.37,0.12],[392,0.49,0.25],
    [349,0.74,0.12],[392,0.86,0.5]].forEach(([f,s,d]) => {
@@ -762,7 +726,6 @@ function playVictory() {
   playNoise(0.5,  0.08, 0.2, 500);
 }
 
-// ── LEADERBOARD: applause ─────────────────────────────────────────────────────
 function playApplause() {
   const ac = getAudioCtx();
   for (let i = 0; i < 14; i++) {
@@ -780,7 +743,6 @@ function playApplause() {
   }
 }
 
-// ─── Reset ────────────────────────────────────────────────────────────────────
 window.resetGame = function() {
   remove(ref(db,"voters"));
   remove(ref(db,"voterNames"));
@@ -790,14 +752,11 @@ window.resetGame = function() {
   showScreen("s-lobby");
 };
 
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
 function showScreen(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
 }
 
-// Lyft cap SVG — rocks left-right via .cap-above CSS class
 function lyftCapSVG(size) {
   return `<svg width="${size}" height="${Math.round(size*0.62)}" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="2" y="20" width="76" height="18" rx="6" fill="#FF00BF"/>
@@ -808,7 +767,6 @@ function lyftCapSVG(size) {
   </svg>`;
 }
 
-// Photo or initials — no cap (cap added as sibling above)
 function avatarImgHTML(name) {
   const file = AVATARS[name];
   const initials = name.split(' ').map(p=>p[0]).join('');
@@ -820,7 +778,6 @@ function avatarImgHTML(name) {
   return `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#1a1a2e;color:#FF00BF;font-weight:700;font-size:20px;">${initials}</div>`;
 }
 
-// Confetti burst
 function spawnConfetti(containerId) {
   const c = document.getElementById(containerId);
   c.innerHTML = "";
