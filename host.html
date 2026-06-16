@@ -28,10 +28,7 @@ body{font-family:system-ui,sans-serif;background:#0a0a0f;color:#fff;min-height:1
 @keyframes spotSwing2{0%,100%{transform:translateX(-50%) rotate(10deg);}50%{transform:translateX(-50%) rotate(-10deg);}}
 @keyframes spotSwing3{0%,100%{transform:rotate(16deg);}50%{transform:rotate(-10deg);}}
 
-/* ===== SHOOTING STARS ===== */
-.star{position:absolute;width:3px;height:3px;border-radius:50%;background:#FF00BF;pointer-events:none;}
-.star::after{content:"";position:absolute;top:50%;left:0;width:80px;height:1px;background:linear-gradient(90deg,rgba(255,0,191,0.6),transparent);transform:translateY(-50%) translateX(-100%);}
-@keyframes shootStar{0%{opacity:1;transform:translate(0,0);}100%{opacity:0;transform:translate(-320px,200px);}}
+
 
 .logo{position:absolute;top:24px;left:32px;display:flex;align-items:center;gap:10px;z-index:10;}
 .logo-lyft{color:#FF00BF;font-weight:700;font-size:22px;letter-spacing:1px;text-shadow:0 0 20px rgba(255,0,191,0.4);}
@@ -249,9 +246,7 @@ h2{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:0;}
 <div class="screen" id="s-results">
   <div class="logo"><span class="logo-lyft">Lyft</span><span class="logo-sep">|</span><span class="logo-title">Procurement Oscars</span></div>
   <div class="bg-graphic" id="r-bg-graphic"></div>
-  <!-- Shooting stars container -->
-  <div id="shooting-stars" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;overflow:hidden;"></div>
-  <div style="width:100%;max-width:660px;position:relative;z-index:1;">
+<div style="width:100%;max-width:660px;position:relative;z-index:1;">
     <div style="text-align:center;margin-bottom:20px;" class="fade-up">
       <div style="font-size:32px;margin-bottom:6px;" id="r-icon"></div>
       <div style="color:#666;font-size:16px;margin-bottom:12px;" id="r-label"></div>
@@ -619,7 +614,6 @@ window.showResults = function() {
 
   if (entries[0]) {
     spawnConfetti("confetti-container");
-    spawnShootingStars();
   }
 
   document.getElementById("btn-next-award").textContent =
@@ -933,21 +927,7 @@ function showJoinToast(name) {
   toastTimeout = setTimeout(() => toast.classList.remove("show"), 2200);
 }
 
-// Shooting stars on results screen
-function spawnShootingStars() {
-  const cont = document.getElementById("shooting-stars");
-  cont.innerHTML = "";
-  for (let i = 0; i < 12; i++) {
-    const star = document.createElement("div");
-    star.className = "star";
-    const top = Math.random() * 70;
-    const left = 20 + Math.random() * 70;
-    const delay = Math.random() * 2.5;
-    const dur = 1.2 + Math.random() * 0.8;
-    star.style.cssText = `top:${top}%;left:${left}%;animation:shootStar ${dur}s ${delay}s ease-out forwards;`;
-    cont.appendChild(star);
-  }
-}
+
 
 function lyftCapSVG(size) {
   return `<svg width="${size}" height="${Math.round(size*0.62)}" viewBox="0 0 80 50" fill="none" xmlns="http://www.w3.org/2000/svg">
